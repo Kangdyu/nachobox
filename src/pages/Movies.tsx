@@ -1,7 +1,8 @@
 import React from "react";
+import { MainContainer } from "../styles";
 
 function Movies() {
-  return <div>Movies</div>;
+  return <MainContainer>Movies</MainContainer>;
 }
 
 export default Movies;

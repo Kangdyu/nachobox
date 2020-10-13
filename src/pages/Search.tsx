@@ -1,7 +1,8 @@
 import React from "react";
+import { MainContainer } from "../styles";
 
 function Search() {
-  return <div>Search</div>;
+  return <MainContainer>Search</MainContainer>;
 }
 
 export default Search;

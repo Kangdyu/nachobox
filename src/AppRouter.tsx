@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Header from "./components/Header";
 import Detail from "./pages/Detail";
 import Home from "./pages/Home";
 import Movies from "./pages/Movies";
@@ -9,13 +10,26 @@ import TV from "./pages/TV";
 function AppRouter() {
   return (
     <Router>
+      <Header />
       <Switch>
-        <Route exact path="/" component={Home} />
-        <Route path="/movies" component={Movies} />
-        <Route path="/movie/:id" component={Detail} />
-        <Route exact path="/tv" component={TV} />
-        <Route path="/tv/:id" component={Detail} />
-        <Route path="/search" component={Search} />
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route path="/movies">
+          <Movies />
+        </Route>
+        <Route path="/movie/:id">
+          <Detail />
+        </Route>
+        <Route exact path="/tv">
+          <TV />
+        </Route>
+        <Route path="/tv/:id">
+          <Detail />
+        </Route>
+        <Route path="/search">
+          <Search />
+        </Route>
       </Switch>
     </Router>
   );
