@@ -10,10 +10,6 @@ export const GlobalStyle = createGlobalStyle`
     color: white;
   }
 
-  #root {
-    height: 100vh;
-  }
-
   * {
     box-sizing: border-box;
   }
@@ -22,18 +18,18 @@ export const GlobalStyle = createGlobalStyle`
 export const theme: DefaultTheme = {
   paddings: {
     containerTop: "80px",
-    side: "20px"
+    side: "20px",
   },
   colors: {
     main: "#41444b",
     secondary: "#52575d",
-    highlight: "#fddb3a"
-  }
-}
+    highlight: "#fddb3a",
+  },
+};
 
 export const MainContainer = styled.div`
-  height: 100%;
-  padding: 0 ${props => props.theme.paddings.side};
-  padding-top: ${props => props.theme.paddings.containerTop};
-  background-color: ${props => props.theme.colors.main};
+  min-height: 100vh;
+  padding: 0 ${(props) => props.theme.paddings.side};
+  padding-top: ${(props) => props.theme.paddings.containerTop};
+  background-color: ${(props) => props.theme.colors.main};
 `;
