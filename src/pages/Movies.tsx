@@ -20,10 +20,26 @@ function Movies() {
         <Loading />
       ) : (
         <>
-          <Category title="Now Playing" list={nowPlaying as CategoryList} />
-          <Category title="Upcoming" list={upcoming as CategoryList} />
-          <Category title="Popular" list={popular as CategoryList} />
-          <Category title="Top Rated" list={topRated as CategoryList} />
+          <Category
+            title="Now Playing"
+            list={nowPlaying as CategoryList}
+            gridWidth="200px"
+          />
+          <Category
+            title="Upcoming"
+            list={upcoming as CategoryList}
+            gridWidth="200px"
+          />
+          <Category
+            title="Popular"
+            list={popular as CategoryList}
+            gridWidth="200px"
+          />
+          <Category
+            title="Top Rated"
+            list={topRated as CategoryList}
+            gridWidth="200px"
+          />
         </>
       )}
     </MainContainer>

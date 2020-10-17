@@ -17,12 +17,12 @@ export const GlobalStyle = createGlobalStyle`
 
 export const theme: DefaultTheme = {
   paddings: {
-    containerTop: "80px",
-    side: "20px",
+    containerTop: "100px",
+    side: "30px",
   },
   colors: {
-    main: "#41444b",
-    secondary: "#52575d",
+    main: "#222831",
+    secondary: "#393e46",
     highlight: "#fddb3a",
   },
 };

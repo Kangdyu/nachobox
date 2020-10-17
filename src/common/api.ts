@@ -37,6 +37,7 @@ export type CategoryList = {
   total_items: number;
 };
 
+// TODO: add region parameter for now playing, upcoming
 export function useMovieList(category: MovieCategory) {
   const [data, setData] = useState<CategoryList | null>(null);
   const [error, setError] = useState<string | null>(null);
