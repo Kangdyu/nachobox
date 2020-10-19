@@ -23,22 +23,26 @@ function Movies() {
           <Category
             title="Now Playing"
             list={nowPlaying as CategoryList}
-            gridWidth="200px"
+            gridWidth={200}
+            gridGap={15}
           />
           <Category
             title="Upcoming"
             list={upcoming as CategoryList}
-            gridWidth="200px"
+            gridWidth={200}
+            gridGap={15}
           />
           <Category
             title="Popular"
             list={popular as CategoryList}
-            gridWidth="200px"
+            gridWidth={200}
+            gridGap={15}
           />
           <Category
             title="Top Rated"
             list={topRated as CategoryList}
-            gridWidth="200px"
+            gridWidth={200}
+            gridGap={15}
           />
         </>
       )}

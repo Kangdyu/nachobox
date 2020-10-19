@@ -7,9 +7,8 @@ const Container = styled.div`
   cursor: pointer;
 `;
 
-const Poster = styled.img<{ width: string }>`
-  height: ${({ width }) =>
-    parseInt(width.substring(0, width.length - 2)) * 1.5 + "px"};
+const Poster = styled.img<{ width: number }>`
+  height: ${({ width }) => width * 1.5 + "px"};
   border-radius: 10px;
 `;
 
@@ -25,8 +24,8 @@ const Overlay = styled.div`
   transition: opacity 0.3s ease-in-out;
 
   padding: 5px 10px;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
+  display: flex;
+  flex-direction: column;
 `;
 
 const OverlayRow = styled.div`
@@ -35,6 +34,7 @@ const OverlayRow = styled.div`
 `;
 
 const OverlayStatusBar = styled(OverlayRow)`
+  font-size: 1.2rem;
   justify-content: space-between;
 `;
 
@@ -42,7 +42,14 @@ const OverlayTitle = styled(OverlayRow)`
   font-size: 1.1rem;
 `;
 
+const OverlayReleaseDate = styled(OverlayRow)`
+  font-size: 0.8rem;
+  color: #aaa;
+  flex: 1;
+`;
+
 const OverlayRating = styled(OverlayRow)`
+  font-size: 0.8rem;
   justify-content: flex-end;
 `;
 
@@ -71,9 +78,9 @@ const Year = styled.h3`
 
 type CategoryItemProps = {
   posterURL: string;
-  width: string;
+  width: number;
   title: string;
-  year: string;
+  releaseDate: string;
   rating: number;
 };
 
@@ -81,7 +88,7 @@ function CategoryItem({
   posterURL,
   width,
   title,
-  year,
+  releaseDate,
   rating,
 }: CategoryItemProps) {
   return (
@@ -93,12 +100,13 @@ function CategoryItem({
             <span>♡</span>
           </OverlayStatusBar>
           <OverlayTitle>{title}</OverlayTitle>
+          <OverlayReleaseDate>개봉일: {releaseDate}</OverlayReleaseDate>
           <OverlayRating>★ {rating} / 10</OverlayRating>
         </Overlay>
         <Poster src={posterURL} width={width} />
       </PosterContainer>
       <Title>{title}</Title>
-      <Year>{year}</Year>
+      <Year>{releaseDate.split("-")[0]}</Year>
     </Container>
   );
 }

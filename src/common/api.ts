@@ -5,7 +5,7 @@ const api = axios.create({
   baseURL: "https://api.themoviedb.org/3/",
   params: {
     api_key: process.env.REACT_APP_TMDB_API_KEY,
-    language: "en-US",
+    language: "ko-KR",
   },
 });
 
@@ -46,7 +46,11 @@ export function useMovieList(category: MovieCategory) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await api.get(`movie/${category}`);
+        const response = await api.get(`movie/${category}`, {
+          params: {
+            region: "KR",
+          },
+        });
         const result = response.data;
         setData(result);
       } catch (error) {
@@ -73,10 +77,26 @@ export function useMovieListAll() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const { data: nowPlayingData } = await api.get(`movie/now_playing`);
-        const { data: upcomingData } = await api.get(`movie/upcoming`);
-        const { data: popularData } = await api.get(`movie/popular`);
-        const { data: topRatedData } = await api.get(`movie/top_rated`);
+        const { data: nowPlayingData } = await api.get(`movie/now_playing`, {
+          params: {
+            region: "KR",
+          },
+        });
+        const { data: upcomingData } = await api.get(`movie/upcoming`, {
+          params: {
+            region: "KR",
+          },
+        });
+        const { data: popularData } = await api.get(`movie/popular`, {
+          params: {
+            region: "KR",
+          },
+        });
+        const { data: topRatedData } = await api.get(`movie/top_rated`, {
+          params: {
+            region: "KR",
+          },
+        });
 
         setNowPlaying(nowPlayingData);
         setUpcoming(upcomingData);

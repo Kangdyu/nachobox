@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { CategoryList } from "../common/api";
-import CategoryItem from "./CategoryItem";
+import CategoryGrid from "./CategoryGrid";
 
 const Container = styled.section`
   display: flex;
@@ -17,38 +17,18 @@ const Title = styled.h1`
   margin-bottom: 20px;
 `;
 
-const Grid = styled.div<{ width: string }>`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, ${({ width }) => width});
-  gap: 15px;
-`;
-
 type CategoryProps = {
   title: string;
   list: CategoryList;
-  gridWidth: string;
+  gridWidth: number;
+  gridGap: number;
 };
 
-function Category({ title, list, gridWidth }: CategoryProps) {
+function Category({ title, list, gridWidth, gridGap }: CategoryProps) {
   return (
     <Container>
       <Title>{title}</Title>
-      <Grid width={gridWidth}>
-        {list.results.map((item) => (
-          <CategoryItem
-            key={item.id}
-            posterURL={
-              item.poster_path
-                ? "https://image.tmdb.org/t/p/w500/" + item.poster_path
-                : require("../assets/nacho-icon.png")
-            }
-            width={gridWidth}
-            title={item.title}
-            year={item.release_date.split("-")[0]}
-            rating={item.vote_average}
-          />
-        ))}
-      </Grid>
+      <CategoryGrid list={list} gridWidth={gridWidth} gridGap={gridGap} />
     </Container>
   );
 }
