@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 
 const api = axios.create({
   baseURL: "https://api.themoviedb.org/3/",
@@ -37,7 +37,6 @@ export type CategoryList = {
   total_items: number;
 };
 
-// TODO: add region parameter for now playing, upcoming
 export function useMovieList(category: MovieCategory) {
   const [data, setData] = useState<CategoryList | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -65,53 +64,96 @@ export function useMovieList(category: MovieCategory) {
   return { data, error, loading };
 }
 
+type MovieListState = {
+  nowPlaying: CategoryList | null;
+  upcoming: CategoryList | null;
+  popular: CategoryList | null;
+  topRated: CategoryList | null;
+  error: string;
+  loading: boolean;
+};
+
+type ApiAction =
+  | {
+      type: "setLists";
+      payload: {
+        nowPlaying: CategoryList;
+        upcoming: CategoryList;
+        popular: CategoryList;
+        topRated: CategoryList;
+      };
+    }
+  | { type: "setError"; payload: string };
+
+function reducer(state: MovieListState, action: ApiAction): MovieListState {
+  switch (action.type) {
+    case "setLists":
+      return {
+        nowPlaying: action.payload.nowPlaying,
+        upcoming: action.payload.upcoming,
+        popular: action.payload.popular,
+        topRated: action.payload.topRated,
+        error: "",
+        loading: false,
+      };
+    case "setError":
+      return { ...state, error: action.payload, loading: false };
+    default:
+      throw new Error("Unknown Action");
+  }
+}
+
 export function useMovieListAll() {
-  // TODO: change to useReducer
-  const [nowPlaying, setNowPlaying] = useState<CategoryList | null>(null);
-  const [upcoming, setUpcoming] = useState<CategoryList | null>(null);
-  const [popular, setPopular] = useState<CategoryList | null>(null);
-  const [topRated, setTopRated] = useState<CategoryList | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [result, dispatch] = useReducer(reducer, {
+    nowPlaying: null,
+    upcoming: null,
+    popular: null,
+    topRated: null,
+    error: "",
+    loading: true,
+  });
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const { data: nowPlayingData } = await api.get(`movie/now_playing`, {
+        const { data: nowPlaying } = await api.get(`movie/now_playing`, {
           params: {
             region: "KR",
           },
         });
-        const { data: upcomingData } = await api.get(`movie/upcoming`, {
+        const { data: upcoming } = await api.get(`movie/upcoming`, {
           params: {
             region: "KR",
           },
         });
-        const { data: popularData } = await api.get(`movie/popular`, {
+        const { data: popular } = await api.get(`movie/popular`, {
           params: {
             region: "KR",
           },
         });
-        const { data: topRatedData } = await api.get(`movie/top_rated`, {
+        const { data: topRated } = await api.get(`movie/top_rated`, {
           params: {
             region: "KR",
           },
         });
 
-        setNowPlaying(nowPlayingData);
-        setUpcoming(upcomingData);
-        setPopular(popularData);
-        setTopRated(topRatedData);
+        dispatch({
+          type: "setLists",
+          payload: {
+            nowPlaying,
+            upcoming,
+            popular,
+            topRated,
+          },
+        });
       } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
+        dispatch({ type: "setError", payload: error });
       }
     }
     fetchData();
   }, []);
 
-  return { nowPlaying, upcoming, popular, topRated, error, loading };
+  return result;
 }
 // export function useMovieDetail(id: number) {}
 // export function useTvList() {}

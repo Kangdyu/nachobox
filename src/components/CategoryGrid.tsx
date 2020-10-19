@@ -63,7 +63,7 @@ function CategoryGrid({ list, gridWidth, gridGap }: CategoryGridProps) {
   const [isRightEnd, setIsRightEnd] = useState(false);
   const gridRef = useRef() as React.RefObject<HTMLDivElement>;
 
-  const scrollAmount = gridWidth + gridGap;
+  const scrollAmount = (gridWidth + gridGap) * 3;
 
   const onScrollLeft = () => {
     if (scroll > -scrollAmount) {
@@ -84,8 +84,9 @@ function CategoryGrid({ list, gridWidth, gridGap }: CategoryGridProps) {
 
     const containerWidth = gridRef.current.clientWidth;
     const maxScrollLimit = -(
-      list.results.length * scrollAmount -
-      containerWidth
+      list.results.length * (gridWidth + gridGap) -
+      containerWidth -
+      gridGap
     );
 
     if (scroll - scrollAmount < maxScrollLimit) {
