@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import { MovieListItem, TVListItem } from "../api/types";
+import { isMovieItem } from "../common/typeGuards";
 import CategoryItem from "./CategoryItem";
 
 const ScrollButton = styled.button<{
@@ -52,16 +53,10 @@ const Grid = styled.div<{ width: number; gap: number; scroll: number }>`
 `;
 
 type CategoryGridProps = {
-  list: MovieListItem[] | TVListItem[];
+  list: (MovieListItem | TVListItem)[];
   gridWidth: number;
   gridGap: number;
 };
-
-function isMovieList(
-  target: MovieListItem[] | TVListItem[]
-): target is MovieListItem[] {
-  return (target as MovieListItem[])[0].title !== undefined;
-}
 
 function CategoryGrid({ list, gridWidth, gridGap }: CategoryGridProps) {
   const [scroll, setScroll] = useState(0);
@@ -110,35 +105,22 @@ function CategoryGrid({ list, gridWidth, gridGap }: CategoryGridProps) {
   return (
     <Container>
       <Grid ref={gridRef} width={gridWidth} gap={gridGap} scroll={scroll}>
-        {isMovieList(list)
-          ? list.map((item) => (
-              <CategoryItem
-                key={item.id}
-                posterURL={
-                  item.poster_path
-                    ? "https://image.tmdb.org/t/p/w500" + item.poster_path
-                    : require("../assets/nacho-icon.png")
-                }
-                width={gridWidth}
-                title={item.title}
-                releaseDate={item.release_date}
-                rating={item.vote_average}
-              />
-            ))
-          : list.map((item) => (
-              <CategoryItem
-                key={item.id}
-                posterURL={
-                  item.poster_path
-                    ? "https://image.tmdb.org/t/p/w500" + item.poster_path
-                    : require("../assets/nacho-icon.png")
-                }
-                width={gridWidth}
-                title={item.name}
-                releaseDate={item.first_air_date}
-                rating={item.vote_average}
-              />
-            ))}
+        {list.map((item) => (
+          <CategoryItem
+            key={item.id}
+            width={gridWidth}
+            rating={item.vote_average}
+            posterURL={
+              item.poster_path
+                ? "https://image.tmdb.org/t/p/w500" + item.poster_path
+                : require("../assets/nacho-icon.png")
+            }
+            title={isMovieItem(item) ? item.title : item.name}
+            releaseDate={
+              isMovieItem(item) ? item.release_date : item.first_air_date
+            }
+          />
+        ))}
       </Grid>
       <ScrollButton
         direction="left"
