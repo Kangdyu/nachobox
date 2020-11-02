@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { MovieListItem, TVListItem } from "../api/types";
 import CategoryGrid from "./CategoryGrid";
 
 const Container = styled.section`
@@ -18,7 +19,7 @@ const Title = styled.h1`
 
 type CategoryProps = {
   title: string;
-  list: [];
+  list: MovieListItem[] | TVListItem[];
   gridWidth: number;
   gridGap: number;
 };
