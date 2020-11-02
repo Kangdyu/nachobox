@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { CategoryList } from "../common/api";
 import CategoryGrid from "./CategoryGrid";
 
 const Container = styled.section`
@@ -19,7 +18,7 @@ const Title = styled.h1`
 
 type CategoryProps = {
   title: string;
-  list: CategoryList;
+  list: [];
   gridWidth: number;
   gridGap: number;
 };

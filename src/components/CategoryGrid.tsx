@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import styled, { css } from "styled-components";
-import { CategoryList } from "../common/api";
 import CategoryItem from "./CategoryItem";
 
 const ScrollButton = styled.button<{
@@ -52,7 +51,7 @@ const Grid = styled.div<{ width: number; gap: number; scroll: number }>`
 `;
 
 type CategoryGridProps = {
-  list: CategoryList;
+  list: [];
   gridWidth: number;
   gridGap: number;
 };
@@ -84,7 +83,7 @@ function CategoryGrid({ list, gridWidth, gridGap }: CategoryGridProps) {
 
     const containerWidth = gridRef.current.clientWidth;
     const maxScrollLimit = -(
-      list.results.length * (gridWidth + gridGap) -
+      list.length * (gridWidth + gridGap) -
       containerWidth -
       gridGap
     );
@@ -104,7 +103,7 @@ function CategoryGrid({ list, gridWidth, gridGap }: CategoryGridProps) {
   return (
     <Container>
       <Grid ref={gridRef} width={gridWidth} gap={gridGap} scroll={scroll}>
-        {list.results.map((item) => (
+        {list.map((item) => (
           <CategoryItem
             key={item.id}
             posterURL={
@@ -113,8 +112,10 @@ function CategoryGrid({ list, gridWidth, gridGap }: CategoryGridProps) {
                 : require("../assets/nacho-icon.png")
             }
             width={gridWidth}
-            title={item.title}
-            releaseDate={item.release_date}
+            title={item.title ? item.title : item.name}
+            releaseDate={
+              item.release_date ? item.release_date : item.first_air_date
+            }
             rating={item.vote_average}
           />
         ))}
