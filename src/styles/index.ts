@@ -17,8 +17,10 @@ export const GlobalStyle = createGlobalStyle`
 `;
 
 export const theme: DefaultTheme = {
+  footerHeight: "100px",
   paddings: {
     containerTop: "100px",
+    containerBottom: "100px",
     side: "30px",
   },
   colors: {
@@ -29,8 +31,9 @@ export const theme: DefaultTheme = {
 };
 
 export const MainContainer = styled.div`
-  min-height: 100vh;
+  min-height: calc(100vh - ${(props) => props.theme.footerHeight});
   padding: 0 ${(props) => props.theme.paddings.side};
   padding-top: ${(props) => props.theme.paddings.containerTop};
+  padding-bottom: ${(props) => props.theme.paddings.containerBottom};
   background-color: ${(props) => props.theme.colors.main};
 `;
