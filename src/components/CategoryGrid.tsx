@@ -1,7 +1,8 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import styled, { css } from "styled-components";
 import { MovieListItem, TVListItem } from "../api/types";
 import { isMovieItem } from "../common/typeGuards";
+import useScrollGrid from "../hooks/useScrollGrid";
 import CategoryItem from "./CategoryItem";
 
 const ScrollButton = styled.button<{
@@ -59,52 +60,23 @@ type CategoryGridProps = {
 };
 
 function CategoryGrid({ list, gridWidth, gridGap }: CategoryGridProps) {
-  const [scroll, setScroll] = useState(0);
-  const [isLeftEnd, setIsLeftEnd] = useState(true);
-  const [isRightEnd, setIsRightEnd] = useState(false);
-  const gridRef = useRef() as React.RefObject<HTMLDivElement>;
-
-  const scrollAmount = (gridWidth + gridGap) * 3;
-
-  const onScrollLeft = () => {
-    if (scroll > -scrollAmount) {
-      setScroll(0);
-      setIsLeftEnd(true);
-    } else {
-      setScroll(scroll + scrollAmount);
-      if (scroll + scrollAmount === 0) {
-        setIsLeftEnd(true);
-      }
-    }
-    setIsRightEnd(false);
-  };
-  const onScrollRight = () => {
-    if (!gridRef.current) {
-      return;
-    }
-
-    const containerWidth = gridRef.current.clientWidth;
-    const maxScrollLimit = -(
-      list.length * (gridWidth + gridGap) -
-      containerWidth -
-      gridGap
-    );
-
-    if (scroll - scrollAmount < maxScrollLimit) {
-      setScroll(maxScrollLimit);
-      setIsRightEnd(true);
-    } else {
-      setScroll(scroll - scrollAmount);
-      if (scroll - scrollAmount === maxScrollLimit) {
-        setIsRightEnd(true);
-      }
-    }
-    setIsLeftEnd(false);
-  };
+  const { scroll, gridRef, onScrollLeft, onScrollRight } = useScrollGrid({
+    scrollRatio: 2,
+    gridInfo: {
+      gridWidth,
+      gridGap,
+      gridListLength: list.length,
+    },
+  });
 
   return (
     <Container>
-      <Grid ref={gridRef} width={gridWidth} gap={gridGap} scroll={scroll}>
+      <Grid
+        ref={gridRef}
+        width={gridWidth}
+        gap={gridGap}
+        scroll={scroll.amount}
+      >
         {list.map((item) => (
           <CategoryItem
             key={item.id}
@@ -125,14 +97,14 @@ function CategoryGrid({ list, gridWidth, gridGap }: CategoryGridProps) {
       <ScrollButton
         direction="left"
         onClick={onScrollLeft}
-        visible={!isLeftEnd}
+        visible={!scroll.isLeftEnd}
       >
         &lt;
       </ScrollButton>
       <ScrollButton
         direction="right"
         onClick={onScrollRight}
-        visible={!isRightEnd}
+        visible={!scroll.isRightEnd}
       >
         &gt;
       </ScrollButton>
