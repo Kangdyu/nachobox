@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
-const Container = styled.header`
+const Container = styled.header<{ isCurrent: boolean }>`
   position: fixed;
   z-index: 999;
 
@@ -13,8 +13,11 @@ const Container = styled.header`
   display: flex;
   align-items: center;
 
-  background-color: ${(props) => props.theme.colors.main};
+  background-color: ${(props) =>
+    props.isCurrent ? "transparent" : props.theme.colors.main};
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+
+  transition: background-color 0.2s linear;
 `;
 
 const Icon = styled(Link)`
@@ -26,7 +29,7 @@ const Icon = styled(Link)`
   }
 `;
 
-const Tab = styled(Link)<{ current: string }>`
+const Tab = styled(Link)<{ $isCurrent: boolean }>`
   text-decoration: none;
   color: inherit;
 
@@ -39,9 +42,7 @@ const Tab = styled(Link)<{ current: string }>`
 
   border-bottom: 3px solid
     ${(props) =>
-      props.current === props.to
-        ? props.theme.colors.highlight
-        : "transparent"};
+      props.$isCurrent ? props.theme.colors.highlight : "transparent"};
 
   &:not(:last-child) {
     margin-right: 10px;
@@ -54,17 +55,17 @@ function Header() {
   const { pathname } = useLocation();
 
   return (
-    <Container>
+    <Container isCurrent={pathname === "/"}>
       <Icon to="/">
         <img src={require("../assets/nacho-icon.png")} alt="icon" />
       </Icon>
-      <Tab to="/movies" current={pathname}>
+      <Tab to="/movies" $isCurrent={pathname === "/movies"}>
         Movies
       </Tab>
-      <Tab to="/tv" current={pathname}>
+      <Tab to="/tv" $isCurrent={pathname === "/tv"}>
         TV
       </Tab>
-      <Tab to="/search" current={pathname}>
+      <Tab to="/search" $isCurrent={pathname === "/search"}>
         Search
       </Tab>
     </Container>

@@ -1,18 +1,25 @@
 import React from "react";
 import styled from "styled-components";
 
-const StyledButton = styled.button<{ color?: string; size?: string }>``;
+type StyledButtonProps = {
+  bgColor?: string;
+  color?: string;
+  size?: string;
+};
+
+const StyledButton = styled.button<StyledButtonProps>``;
 
 type ButtonProps = {
+  bgColor?: string;
   color?: string;
   size?: string;
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   children: React.ReactNode;
 };
 
-function Button({ color, size, onClick, children }: ButtonProps) {
+function Button({ bgColor, color, size, onClick, children }: ButtonProps) {
   return (
-    <StyledButton color={color} size={size} onClick={onClick}>
+    <StyledButton bgColor={bgColor} color={color} size={size} onClick={onClick}>
       {children}
     </StyledButton>
   );

@@ -35,7 +35,17 @@ const Title = styled.h1`
 `;
 
 const ButtonContainer = styled.div`
-  width: 90%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const ButtonColumn = styled.div`
+  button {
+    &:not(:last-child) {
+      margin-right: 20px;
+    }
+  }
 `;
 
 type RecommendedMovieProps = {
@@ -51,9 +61,13 @@ function RecommendedMovie({ movie }: RecommendedMovieProps) {
       <InfoOverlay>
         <Title>{movie.title}</Title>
         <ButtonContainer>
-          <Button>+ 내가 찜한 콘텐츠</Button>
-          <Button>♡ 좋아요</Button>
-          <Button>상세보기</Button>
+          <ButtonColumn>
+            <Button>+ 내가 찜한 콘텐츠</Button>
+            <Button>♡ 좋아요</Button>
+          </ButtonColumn>
+          <ButtonColumn>
+            <Button>상세보기</Button>
+          </ButtonColumn>
         </ButtonContainer>
       </InfoOverlay>
     </Container>
