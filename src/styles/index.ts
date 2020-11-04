@@ -9,6 +9,7 @@ export const GlobalStyle = createGlobalStyle`
     font-size: 16px;
     color: white;
     overflow-x: hidden;
+    background-color: ${(props) => props.theme.colors.main};
   }
 
   * {
@@ -31,9 +32,8 @@ export const theme: DefaultTheme = {
 };
 
 export const MainContainer = styled.div`
-  min-height: calc(100vh - ${(props) => props.theme.footerHeight});
+  /* min-height: calc(100vh - ${(props) => props.theme.footerHeight}); */
   padding: 0 ${(props) => props.theme.paddings.side};
   padding-top: ${(props) => props.theme.paddings.containerTop};
   padding-bottom: ${(props) => props.theme.paddings.containerBottom};
-  background-color: ${(props) => props.theme.colors.main};
 `;
