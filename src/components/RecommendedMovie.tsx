@@ -22,7 +22,7 @@ const BackdropImage = styled.div<{ image: string }>`
 const InfoOverlay = styled.div`
   position: absolute;
   left: 5%;
-  top: 35vh;
+  top: 30vh;
   width: 90%;
 `;
 
@@ -30,12 +30,20 @@ const Title = styled.h1`
   width: 75%;
   font-size: 5vw;
   font-weight: 900;
+  margin-bottom: 50px;
+`;
 
-  margin-bottom: 150px;
+const Description = styled.p`
+  width: 50%;
+  line-height: 1.5;
+  margin-bottom: 100px;
 `;
 
 const ButtonContainer = styled.div`
-  width: 100%;
+  position: absolute;
+  width: 90%;
+  left: 5%;
+  bottom: 25vh;
   display: flex;
   justify-content: space-between;
 `;
@@ -60,22 +68,23 @@ function RecommendedMovie({ movie }: RecommendedMovieProps) {
       />
       <InfoOverlay>
         <Title>{movie.title}</Title>
-        <ButtonContainer>
-          <ButtonColumn>
-            <SquareButton size="big" bgColor="main">
-              상세보기
-            </SquareButton>
-          </ButtonColumn>
-          <ButtonColumn>
-            <SquareButton size="big" bgColor="main">
-              + 내가 찜한 콘텐츠
-            </SquareButton>
-            <SquareButton size="big" bgColor="main">
-              ♡ 좋아요
-            </SquareButton>
-          </ButtonColumn>
-        </ButtonContainer>
+        <Description>{movie.overview}</Description>
       </InfoOverlay>
+      <ButtonContainer>
+        <ButtonColumn>
+          <SquareButton size="big" bgColor="main">
+            상세보기
+          </SquareButton>
+        </ButtonColumn>
+        <ButtonColumn>
+          <SquareButton size="big" bgColor="main">
+            + 내가 찜한 콘텐츠
+          </SquareButton>
+          <SquareButton size="big" bgColor="main">
+            ♡ 좋아요
+          </SquareButton>
+        </ButtonColumn>
+      </ButtonContainer>
     </Container>
   );
 }
