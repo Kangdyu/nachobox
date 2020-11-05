@@ -83,6 +83,7 @@ function useScrollGrid({
     .width as number;
   const maxScrollLimit = -(
     gridListLength * (gridWidth + gridGap) -
+    gridGap -
     containerWidth
   );
 
