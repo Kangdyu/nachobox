@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { movieApi, tvApi } from "../api/api";
 import { MovieDetail, TVDetail } from "../api/types";
+import getImageURL from "../common/getImageURL";
 import { isMovieDetail } from "../common/typeGuards";
+import BackdropImage from "../components/BackdropImage";
 import Loading from "../components/Loading";
 import { MainContainer } from "../styles";
 
@@ -39,7 +41,10 @@ function Detail() {
       {loading ? (
         <Loading />
       ) : (
-        data && <>{isMovieDetail(data) ? "Movie" : "TV"}</>
+        data &&
+        data.backdrop_path && (
+          <BackdropImage image={getImageURL(data.backdrop_path, "original")} />
+        )
       )}
     </MainContainer>
   );

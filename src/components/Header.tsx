@@ -60,13 +60,13 @@ function Header() {
       <Icon to="/">
         <img src={require("../assets/nacho-icon.png")} alt="icon" />
       </Icon>
-      <Tab to="/movies" $isCurrent={pathname === "/movies"}>
+      <Tab to="/movies" $isCurrent={pathname.split("/")[1] === "movies"}>
         Movies
       </Tab>
-      <Tab to="/tv" $isCurrent={pathname === "/tv"}>
+      <Tab to="/tv" $isCurrent={pathname.split("/")[1] === "tv"}>
         TV
       </Tab>
-      <Tab to="/search" $isCurrent={pathname === "/search"}>
+      <Tab to="/search" $isCurrent={pathname.split("/")[1] === "search"}>
         Search
       </Tab>
     </Container>

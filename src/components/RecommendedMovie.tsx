@@ -1,22 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import { MovieListItem } from "../api/types";
+import getImageURL from "../common/getImageURL";
+import BackdropImage from "./BackdropImage";
 import SquareButton from "./SquareButton";
 
 const Container = styled.div`
   position: relative;
   width: 100vw;
   height: 100vh;
-`;
-
-const BackdropImage = styled.div<{ image: string }>`
-  width: 100%;
-  height: 100%;
-  background-image: url(${(props) => props.image});
-  background-position: top;
-  background-repeat: no-repeat;
-  background-size: cover;
-  filter: blur(5px) opacity(70%);
 `;
 
 const InfoOverlay = styled.div`
@@ -63,9 +55,9 @@ type RecommendedMovieProps = {
 function RecommendedMovie({ movie }: RecommendedMovieProps) {
   return (
     <Container>
-      <BackdropImage
-        image={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
-      />
+      {movie.backdrop_path && (
+        <BackdropImage image={getImageURL(movie.backdrop_path, "original")} />
+      )}
       <InfoOverlay>
         <Title>{movie.title}</Title>
         <Description>{movie.overview}</Description>

@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { MovieListItem, TVListItem } from "../api/types";
+import getImageURL from "../common/getImageURL";
 import { isMovieListItem } from "../common/typeGuards";
 import useScrollGrid from "../hooks/useScrollGrid";
 import CategoryItem from "./CategoryItem";
@@ -93,7 +94,7 @@ function CategoryGrid({ list, gridWidth, gridGap }: CategoryGridProps) {
               rating={item.vote_average}
               posterURL={
                 item.poster_path
-                  ? "https://image.tmdb.org/t/p/w500" + item.poster_path
+                  ? getImageURL(item.poster_path, "w500")
                   : require("../assets/nacho-icon.png")
               }
               title={isMovieListItem(item) ? item.title : item.name}
