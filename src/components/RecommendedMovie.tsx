@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { MovieListItem } from "../api/types";
-import Button from "./Button";
+import SquareButton from "./SquareButton";
 
 const Container = styled.div`
   position: relative;
@@ -27,7 +27,7 @@ const InfoOverlay = styled.div`
 `;
 
 const Title = styled.h1`
-  width: 70%;
+  width: 75%;
   font-size: 5vw;
   font-weight: 900;
 
@@ -62,11 +62,17 @@ function RecommendedMovie({ movie }: RecommendedMovieProps) {
         <Title>{movie.title}</Title>
         <ButtonContainer>
           <ButtonColumn>
-            <Button>+ 내가 찜한 콘텐츠</Button>
-            <Button>♡ 좋아요</Button>
+            <SquareButton size="big" bgColor="main">
+              상세보기
+            </SquareButton>
           </ButtonColumn>
           <ButtonColumn>
-            <Button>상세보기</Button>
+            <SquareButton size="big" bgColor="main">
+              + 내가 찜한 콘텐츠
+            </SquareButton>
+            <SquareButton size="big" bgColor="main">
+              ♡ 좋아요
+            </SquareButton>
           </ButtonColumn>
         </ButtonContainer>
       </InfoOverlay>

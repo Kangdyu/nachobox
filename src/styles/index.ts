@@ -28,6 +28,9 @@ export const theme: DefaultTheme = {
     main: "#222831",
     secondary: "#393e46",
     highlight: "#fddb3a",
+    black: "#1e1e1e",
+    gray: "#495057",
+    white: "#fbfbf9",
   },
 };
 

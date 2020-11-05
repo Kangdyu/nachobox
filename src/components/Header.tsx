@@ -18,6 +18,7 @@ const Container = styled.header<{ isCurrent: boolean }>`
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 
   transition: background-color 0.2s linear;
+  will-change: background-color;
 `;
 
 const Icon = styled(Link)`
