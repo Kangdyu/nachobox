@@ -1,8 +1,9 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
+import useScroll from "../hooks/useScroll";
 
-const Container = styled.header<{ isCurrent: boolean }>`
+const Container = styled.header<{ transparent: boolean }>`
   position: fixed;
   z-index: 999;
 
@@ -14,7 +15,7 @@ const Container = styled.header<{ isCurrent: boolean }>`
   align-items: center;
 
   background-color: ${(props) =>
-    props.isCurrent ? "transparent" : props.theme.colors.main};
+    props.transparent ? "transparent" : props.theme.colors.main};
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 
   transition: background-color 0.2s linear;
@@ -54,9 +55,10 @@ const Tab = styled(Link)<{ $isCurrent: boolean }>`
 
 function Header() {
   const { pathname } = useLocation();
+  const scroll = useScroll();
 
   return (
-    <Container isCurrent={pathname === "/"}>
+    <Container transparent={scroll === 0}>
       <Icon to="/">
         <img src={require("../assets/nacho-icon.png")} alt="icon" />
       </Icon>
