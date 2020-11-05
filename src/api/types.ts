@@ -113,13 +113,67 @@ export interface CategoryList<T> {
   total_results: number;
 }
 
+type VideoSize = 360 | 480 | 720 | 1080;
+
+type VideoType =
+  | "Trailer"
+  | "Teaser"
+  | "Clip"
+  | "Featurette"
+  | "Behind the Scenens"
+  | "Bloopers";
+
+export interface Video {
+  id: string;
+  key: string;
+  name: string;
+  site: string;
+  size: VideoSize;
+  type: VideoType;
+}
+
+export interface VideoInfo {
+  id: number;
+  results: Video[];
+}
+
+export interface Cast {
+  id: number;
+  credit_id: string;
+  order: number;
+  name: string;
+  character: string;
+  gender: number | null;
+  profile_path: string | null;
+}
+
+export interface Crew {
+  id: number;
+  credit_id: string;
+  name: string;
+  department: string;
+  job: string;
+  gender: number | null;
+  profile_path: string | null;
+}
+
+export interface Credits {
+  id: number;
+  cast: Cast[];
+  crew: Crew[];
+}
+
 export interface MovieApiObject {
   nowPlaying: () => Promise<AxiosResponse<CategoryList<MovieListItem>>>;
   popular: () => Promise<AxiosResponse<CategoryList<MovieListItem>>>;
   topRated: () => Promise<AxiosResponse<CategoryList<MovieListItem>>>;
   upcoming: () => Promise<AxiosResponse<CategoryList<MovieListItem>>>;
   detail: (id: number) => Promise<AxiosResponse<MovieDetail>>;
-  latest: () => Promise<AxiosResponse<MovieDetail>>;
+  videos: (id: number) => Promise<AxiosResponse<VideoInfo>>;
+  credits: (id: number) => Promise<AxiosResponse<Credits>>;
+  recommendations: (
+    id: number
+  ) => Promise<AxiosResponse<CategoryList<MovieListItem>>>;
 }
 
 export interface TVApiObject {
@@ -128,4 +182,9 @@ export interface TVApiObject {
   popular: () => Promise<AxiosResponse<CategoryList<TVListItem>>>;
   topRated: () => Promise<AxiosResponse<CategoryList<TVListItem>>>;
   detail: (id: number) => Promise<AxiosResponse<TVDetail>>;
+  videos: (id: number) => Promise<AxiosResponse<VideoInfo>>;
+  credits: (id: number) => Promise<AxiosResponse<Credits>>;
+  recommendations: (
+    id: number
+  ) => Promise<AxiosResponse<CategoryList<TVListItem>>>;
 }

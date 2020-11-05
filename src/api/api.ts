@@ -35,7 +35,9 @@ export const movieApi: MovieApiObject = {
       },
     }),
   detail: (id: number) => instance.get(`/movie/${id}`),
-  latest: () => instance.get("/movie/latest"),
+  videos: (id: number) => instance.get(`/movie/${id}/videos`),
+  credits: (id: number) => instance.get(`/movie/${id}/credits`),
+  recommendations: (id: number) => instance.get(`/movie/${id}/recommendations`),
 };
 
 export const tvApi: TVApiObject = {
@@ -44,4 +46,7 @@ export const tvApi: TVApiObject = {
   popular: () => instance.get("/tv/popular"),
   topRated: () => instance.get("/tv/top_rated"),
   detail: (id: number) => instance.get(`/tv/${id}`),
+  videos: (id: number) => instance.get(`/tv/${id}/videos`),
+  credits: (id: number) => instance.get(`/tv/${id}/credits`),
+  recommendations: (id: number) => instance.get(`/tv/${id}/recommendations`),
 };
