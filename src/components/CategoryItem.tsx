@@ -99,7 +99,7 @@ function CategoryItem({
             <span>♡</span>
           </OverlayStatusBar>
           <OverlayTitle>{title}</OverlayTitle>
-          <OverlayReleaseDate>개봉일: {releaseDate}</OverlayReleaseDate>
+          <OverlayReleaseDate>{releaseDate}</OverlayReleaseDate>
           <OverlayRating>★ {rating} / 10</OverlayRating>
         </Overlay>
         <Poster src={posterURL} width={width} />

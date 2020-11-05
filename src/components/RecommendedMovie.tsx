@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { MovieListItem } from "../api/types";
 import getImageURL from "../common/getImageURL";
@@ -48,6 +49,10 @@ const ButtonColumn = styled.div`
   }
 `;
 
+const StyledLink = styled(Link)`
+  text-decoration: none;
+`;
+
 type RecommendedMovieProps = {
   movie: MovieListItem;
 };
@@ -64,9 +69,11 @@ function RecommendedMovie({ movie }: RecommendedMovieProps) {
       </InfoOverlay>
       <ButtonContainer>
         <ButtonColumn>
-          <SquareButton size="big" bgColor="main">
-            상세보기
-          </SquareButton>
+          <StyledLink to={`/movies/${movie.id}`}>
+            <SquareButton size="big" bgColor="main">
+              상세보기
+            </SquareButton>
+          </StyledLink>
         </ButtonColumn>
         <ButtonColumn>
           <SquareButton size="big" bgColor="main">
