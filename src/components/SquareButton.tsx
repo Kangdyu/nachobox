@@ -85,6 +85,10 @@ const Button = styled.button<StyleProps>`
     background-color: ${({ theme }) => theme.colors.highlight};
     color: ${({ theme }) => theme.colors.main};
   }
+
+  transition-property: background-color color;
+  transition-duration: 0.1s;
+  transition-timing-function: linear;
 `;
 
 type SquareButtonProps = StyleProps & {

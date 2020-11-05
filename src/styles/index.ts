@@ -36,6 +36,8 @@ export const theme: DefaultTheme = {
 
 export const MainContainer = styled.div`
   /* min-height: calc(100vh - ${(props) => props.theme.footerHeight}); */
+  max-width: 1765px;
+  margin: 0 auto;
   padding: 0 ${(props) => props.theme.paddings.side};
   padding-top: ${(props) => props.theme.paddings.containerTop};
   padding-bottom: ${(props) => props.theme.paddings.containerBottom};

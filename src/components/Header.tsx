@@ -22,7 +22,7 @@ const Container = styled.header<{ isCurrent: boolean }>`
 `;
 
 const Icon = styled(Link)`
-  margin-right: 20px;
+  margin-right: 19px;
 
   img {
     width: 50px;

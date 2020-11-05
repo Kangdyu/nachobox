@@ -1,7 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { MovieListItem, TVListItem } from "../api/types";
-import { isMovieItem } from "../common/typeGuards";
+import { isMovieListItem } from "../common/typeGuards";
 import useScrollGrid from "../hooks/useScrollGrid";
 import CategoryItem from "./CategoryItem";
 
@@ -53,6 +54,11 @@ const Grid = styled.div<{ width: number; gap: number; scroll: number }>`
   transition: transform 0.5s ease-in-out;
 `;
 
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+`;
+
 type CategoryGridProps = {
   list: (MovieListItem | TVListItem)[];
   gridWidth: number;
@@ -78,20 +84,24 @@ function CategoryGrid({ list, gridWidth, gridGap }: CategoryGridProps) {
         scroll={scroll.amount}
       >
         {list.map((item) => (
-          <CategoryItem
+          <StyledLink
             key={item.id}
-            width={gridWidth}
-            rating={item.vote_average}
-            posterURL={
-              item.poster_path
-                ? "https://image.tmdb.org/t/p/w500" + item.poster_path
-                : require("../assets/nacho-icon.png")
-            }
-            title={isMovieItem(item) ? item.title : item.name}
-            releaseDate={
-              isMovieItem(item) ? item.release_date : item.first_air_date
-            }
-          />
+            to={isMovieListItem(item) ? `/movies/${item.id}` : `/tv/${item.id}`}
+          >
+            <CategoryItem
+              width={gridWidth}
+              rating={item.vote_average}
+              posterURL={
+                item.poster_path
+                  ? "https://image.tmdb.org/t/p/w500" + item.poster_path
+                  : require("../assets/nacho-icon.png")
+              }
+              title={isMovieListItem(item) ? item.title : item.name}
+              releaseDate={
+                isMovieListItem(item) ? item.release_date : item.first_air_date
+              }
+            />
+          </StyledLink>
         ))}
       </Grid>
       <ScrollButton

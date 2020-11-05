@@ -15,10 +15,10 @@ function AppRouter() {
         <Route exact path="/">
           <Home />
         </Route>
-        <Route path="/movies">
+        <Route exact path="/movies">
           <Movies />
         </Route>
-        <Route path="/movie/:id">
+        <Route path="/movies/:id">
           <Detail />
         </Route>
         <Route exact path="/tv">
