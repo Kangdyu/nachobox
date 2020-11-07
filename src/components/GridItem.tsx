@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -37,6 +37,7 @@ const Title = styled.h2`
 
 const Subtitle = styled.h3`
   font-size: 0.9rem;
+  padding: 5px 0;
   color: ${({ theme }) => theme.colors.gray};
 `;
 
@@ -48,10 +49,19 @@ type GridItemProps = {
 };
 
 function GridItem({ title, subtitle, image, children }: GridItemProps) {
+  const imageRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    if (imageRef.current) {
+      const { current: elem } = imageRef;
+      elem.style.height = elem.getBoundingClientRect().width * 1.5 + "px";
+    }
+  }, []);
+
   return (
     <Container>
       <PosterContainer>
-        <Poster src={image} />
+        <Poster ref={imageRef} src={image} />
         <Overlay>{children}</Overlay>
       </PosterContainer>
       <Title>{title}</Title>
