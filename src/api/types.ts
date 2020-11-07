@@ -157,7 +157,7 @@ export interface Crew {
   profile_path: string | null;
 }
 
-export interface Credits {
+export interface CreditsInfo {
   id: number;
   cast: Cast[];
   crew: Crew[];
@@ -170,7 +170,7 @@ export interface MovieApiObject {
   upcoming: () => Promise<AxiosResponse<CategoryList<MovieListItem>>>;
   detail: (id: number) => Promise<AxiosResponse<MovieDetail>>;
   videos: (id: number) => Promise<AxiosResponse<VideoInfo>>;
-  credits: (id: number) => Promise<AxiosResponse<Credits>>;
+  credits: (id: number) => Promise<AxiosResponse<CreditsInfo>>;
   recommendations: (
     id: number
   ) => Promise<AxiosResponse<CategoryList<MovieListItem>>>;
@@ -183,7 +183,7 @@ export interface TVApiObject {
   topRated: () => Promise<AxiosResponse<CategoryList<TVListItem>>>;
   detail: (id: number) => Promise<AxiosResponse<TVDetail>>;
   videos: (id: number) => Promise<AxiosResponse<VideoInfo>>;
-  credits: (id: number) => Promise<AxiosResponse<Credits>>;
+  credits: (id: number) => Promise<AxiosResponse<CreditsInfo>>;
   recommendations: (
     id: number
   ) => Promise<AxiosResponse<CategoryList<TVListItem>>>;

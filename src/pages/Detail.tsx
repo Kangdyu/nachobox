@@ -193,7 +193,7 @@ function Detail() {
               </InfoContainer>
             </MainGrid>
             <RelatedVideos />
-            <Credits />
+            <Credits id={data.id} isMovie={isMovie} />
             <Recommendations />
           </>
         )
