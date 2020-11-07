@@ -122,6 +122,7 @@ function Detail() {
       }
     }
 
+    window.scrollTo(0, 0);
     fetchData();
   }, [id, isMovie]);
 
@@ -194,7 +195,7 @@ function Detail() {
             </MainGrid>
             <RelatedVideos />
             <Credits id={data.id} isMovie={isMovie} />
-            <Recommendations />
+            <Recommendations id={data.id} isMovie={isMovie} />
           </>
         )
       )}

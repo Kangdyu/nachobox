@@ -1,18 +1,61 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useEffect, useState } from "react";
+import { movieApi, tvApi } from "../api/api";
+import { MovieListItem, TVListItem } from "../api/types";
+import ScrollGridCategory from "./ScrollGridCategory";
+import TVMovieGridItem from "./TVMovieGridItem";
 
-const Container = styled.div``;
+type RecommendationsProps = {
+  id: number;
+  isMovie: boolean;
+};
 
-const Title = styled.h1`
-  font-size: 1.5rem;
-  font-weight: 700;
-`;
+function Recommendations({ id, isMovie }: RecommendationsProps) {
+  const [loading, setLoading] = useState(true);
+  const [recommendations, setRecommendations] = useState<
+    (MovieListItem | TVListItem)[]
+  >([]);
 
-function Recommendations() {
+  useEffect(() => {
+    async function fetchData() {
+      let apiFunc;
+      if (isMovie) {
+        apiFunc = movieApi.recommendations;
+      } else {
+        apiFunc = tvApi.recommendations;
+      }
+
+      try {
+        const { data } = await apiFunc(id);
+
+        setRecommendations(data.results);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, [id, isMovie]);
+
+  if (loading) {
+    return null;
+  }
+
   return (
-    <Container>
-      <Title>추천 영화</Title>
-    </Container>
+    <>
+      {recommendations !== [] && (
+        <ScrollGridCategory
+          title="추천 영화"
+          columnWidth={200}
+          gap={15}
+          scrollRatio={2}
+          listLength={recommendations.length}
+        >
+          <TVMovieGridItem list={recommendations} />
+        </ScrollGridCategory>
+      )}
+    </>
   );
 }
 
