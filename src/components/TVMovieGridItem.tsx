@@ -21,6 +21,7 @@ function TVMovieGridItem({ list }: TVMovieGridItemProps) {
     <>
       {list.map((item) => (
         <StyledLink
+          key={item.id}
           to={isMovieListItem(item) ? `/movies/${item.id}` : `/tv/${item.id}`}
         >
           <GridItem

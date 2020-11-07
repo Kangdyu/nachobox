@@ -105,6 +105,7 @@ function Detail() {
 
   useEffect(() => {
     async function fetchData() {
+      setLoading(true);
       try {
         if (isMovie) {
           const { data: movie } = await movieApi.detail(+id);
@@ -122,7 +123,6 @@ function Detail() {
       }
     }
 
-    window.scrollTo(0, 0);
     fetchData();
   }, [id, isMovie]);
 
