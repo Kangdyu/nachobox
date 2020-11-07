@@ -1,11 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
-import { MovieListItem, TVListItem } from "../api/types";
-import getImageURL from "../common/getImageURL";
-import { isMovieListItem } from "../common/typeGuards";
 import useScrollGrid from "../hooks/useScrollGrid";
-import CategoryItem from "./CategoryItem";
 
 const ScrollButton = styled.button<{
   direction: "left" | "right";
@@ -45,34 +40,37 @@ const Container = styled.div`
   }
 `;
 
-const Grid = styled.div<{ width: number; gap: number; scroll: number }>`
+const Grid = styled.div<{ columnWidth: number; gap: number; scroll: number }>`
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: ${({ width }) => width + "px"};
+  grid-auto-columns: ${({ columnWidth }) => columnWidth + "px"};
   gap: ${({ gap }) => gap + "px"};
 
   transform: translateX(${({ scroll }) => scroll + "px"});
   transition: transform 0.5s ease-in-out;
 `;
 
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: inherit;
-`;
-
-type CategoryGridProps = {
-  list: (MovieListItem | TVListItem)[];
-  gridWidth: number;
-  gridGap: number;
+type ScrollGridProps = {
+  scrollRatio: number;
+  columnWidth: number;
+  gap: number;
+  listLength: number;
+  children: React.ReactNode;
 };
 
-function CategoryGrid({ list, gridWidth, gridGap }: CategoryGridProps) {
+function ScrollGrid({
+  scrollRatio,
+  columnWidth,
+  gap,
+  listLength,
+  children,
+}: ScrollGridProps) {
   const { scroll, gridRef, onScrollLeft, onScrollRight } = useScrollGrid({
-    scrollRatio: 2,
+    scrollRatio,
     gridInfo: {
-      gridWidth,
-      gridGap,
-      gridListLength: list.length,
+      columnWidth,
+      gap,
+      listLength: listLength,
     },
   });
 
@@ -80,30 +78,11 @@ function CategoryGrid({ list, gridWidth, gridGap }: CategoryGridProps) {
     <Container>
       <Grid
         ref={gridRef}
-        width={gridWidth}
-        gap={gridGap}
+        columnWidth={columnWidth}
+        gap={gap}
         scroll={scroll.amount}
       >
-        {list.map((item) => (
-          <StyledLink
-            key={item.id}
-            to={isMovieListItem(item) ? `/movies/${item.id}` : `/tv/${item.id}`}
-          >
-            <CategoryItem
-              width={gridWidth}
-              rating={item.vote_average}
-              posterURL={
-                item.poster_path
-                  ? getImageURL(item.poster_path, "w500")
-                  : require("../assets/nacho-icon.png")
-              }
-              title={isMovieListItem(item) ? item.title : item.name}
-              releaseDate={
-                isMovieListItem(item) ? item.release_date : item.first_air_date
-              }
-            />
-          </StyledLink>
-        ))}
+        {children}
       </Grid>
       <ScrollButton
         direction="left"
@@ -123,4 +102,4 @@ function CategoryGrid({ list, gridWidth, gridGap }: CategoryGridProps) {
   );
 }
 
-export default CategoryGrid;
+export default ScrollGrid;

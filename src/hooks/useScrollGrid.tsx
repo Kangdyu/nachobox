@@ -62,28 +62,28 @@ function reducer(state: Scroll, action: Action): Scroll {
   }
 }
 
-interface props {
+type useScrollGridProps = {
   gridInfo: {
-    gridWidth: number;
-    gridGap: number;
-    gridListLength: number;
+    columnWidth: number;
+    gap: number;
+    listLength: number;
   };
   scrollRatio: number;
-}
+};
 
 function useScrollGrid({
   scrollRatio,
-  gridInfo: { gridWidth, gridGap, gridListLength },
-}: props) {
+  gridInfo: { columnWidth, gap, listLength },
+}: useScrollGridProps) {
   const [scroll, dispatch] = useReducer(reducer, INITIAL_STATE);
   const gridRef = useRef() as React.RefObject<HTMLDivElement>;
 
-  const scrollAmount = (gridWidth + gridGap) * scrollRatio;
+  const scrollAmount = (columnWidth + gap) * scrollRatio;
   const containerWidth = gridRef.current?.getBoundingClientRect()
     .width as number;
   const maxScrollLimit = -(
-    gridListLength * (gridWidth + gridGap) -
-    gridGap -
+    listLength * (columnWidth + gap) -
+    gap -
     containerWidth
   );
 

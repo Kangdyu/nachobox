@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { tvApi } from "../api/api";
 import { TVListItem } from "../api/types";
-import Category from "../components/Category";
 import Loading from "../components/Loading";
+import ScrollGridCategory from "../components/ScrollGridCategory";
+import TVMovieGridItem from "../components/TVMovieGridItem";
 import { MainContainer } from "../styles";
 
 function TV() {
@@ -39,30 +40,42 @@ function TV() {
         <Loading />
       ) : (
         <>
-          <Category
-            title="Airing Today"
-            list={data.airingToday}
-            gridWidth={200}
-            gridGap={15}
-          />
-          <Category
-            title="On The Air"
-            list={data.onTheAir}
-            gridWidth={200}
-            gridGap={15}
-          />
-          <Category
-            title="Popular"
-            list={data.popular}
-            gridWidth={200}
-            gridGap={15}
-          />
-          <Category
-            title="Top Rated"
-            list={data.topRated}
-            gridWidth={200}
-            gridGap={15}
-          />
+          <ScrollGridCategory
+            title="오늘의 프로그램"
+            columnWidth={200}
+            gap={15}
+            scrollRatio={2}
+            listLength={data.airingToday.length}
+          >
+            <TVMovieGridItem list={data.airingToday} />
+          </ScrollGridCategory>
+          <ScrollGridCategory
+            title="현재 방영중"
+            columnWidth={200}
+            gap={15}
+            scrollRatio={2}
+            listLength={data.onTheAir.length}
+          >
+            <TVMovieGridItem list={data.onTheAir} />
+          </ScrollGridCategory>
+          <ScrollGridCategory
+            title="인기 프로그램"
+            columnWidth={200}
+            gap={15}
+            scrollRatio={2}
+            listLength={data.popular.length}
+          >
+            <TVMovieGridItem list={data.popular} />
+          </ScrollGridCategory>
+          <ScrollGridCategory
+            title="최고 평점 프로그램"
+            columnWidth={200}
+            gap={15}
+            scrollRatio={2}
+            listLength={data.topRated.length}
+          >
+            <TVMovieGridItem list={data.topRated} />
+          </ScrollGridCategory>
         </>
       )}
     </MainContainer>

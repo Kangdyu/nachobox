@@ -29,7 +29,7 @@ export const theme: DefaultTheme = {
     secondary: "#393e46",
     highlight: "#fddb3a",
     black: "#1e1e1e",
-    gray: "#495057",
+    gray: "#aaa",
     white: "#fbfbf9",
   },
 };

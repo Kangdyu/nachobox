@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { movieApi } from "../api/api";
 import { MovieListItem } from "../api/types";
-import Category from "../components/Category";
 import Loading from "../components/Loading";
+import TVMovieGridItem from "../components/TVMovieGridItem";
+import ScrollGridCategory from "../components/ScrollGridCategory";
 import { MainContainer } from "../styles";
 
 function Movies() {
@@ -39,30 +40,42 @@ function Movies() {
         <Loading />
       ) : (
         <>
-          <Category
-            title="Now Playing"
-            list={data.nowPlaying}
-            gridWidth={200}
-            gridGap={15}
-          />
-          <Category
-            title="Upcoming"
-            list={data.upcoming}
-            gridWidth={200}
-            gridGap={15}
-          />
-          <Category
-            title="Popular"
-            list={data.popular}
-            gridWidth={200}
-            gridGap={15}
-          />
-          <Category
-            title="Top Rated"
-            list={data.topRated}
-            gridWidth={200}
-            gridGap={15}
-          />
+          <ScrollGridCategory
+            title="현재 상영중"
+            columnWidth={200}
+            gap={15}
+            scrollRatio={2}
+            listLength={data.nowPlaying.length}
+          >
+            <TVMovieGridItem list={data.nowPlaying} />
+          </ScrollGridCategory>
+          <ScrollGridCategory
+            title="개봉 예정"
+            columnWidth={200}
+            gap={15}
+            scrollRatio={2}
+            listLength={data.upcoming.length}
+          >
+            <TVMovieGridItem list={data.upcoming} />
+          </ScrollGridCategory>
+          <ScrollGridCategory
+            title="인기 영화"
+            columnWidth={200}
+            gap={15}
+            scrollRatio={2}
+            listLength={data.popular.length}
+          >
+            <TVMovieGridItem list={data.popular} />
+          </ScrollGridCategory>
+          <ScrollGridCategory
+            title="최고 평점 영화"
+            columnWidth={200}
+            gap={15}
+            scrollRatio={2}
+            listLength={data.topRated.length}
+          >
+            <TVMovieGridItem list={data.topRated} />
+          </ScrollGridCategory>
         </>
       )}
     </MainContainer>
