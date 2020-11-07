@@ -27,7 +27,7 @@ function TVMovieGridItem({ list }: TVMovieGridItemProps) {
             image={
               item.poster_path
                 ? getImageURL(item.poster_path, "w500")
-                : require("../assets/nacho-icon.png")
+                : require("../assets/no-image.png")
             }
             title={isMovieListItem(item) ? item.title : item.name}
             subtitle={

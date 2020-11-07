@@ -59,7 +59,7 @@ function Credits({ id, isMovie }: CreditsProps) {
               image={
                 person.profile_path
                   ? getImageURL(person.profile_path, "w500")
-                  : require("../assets/nacho-icon.png")
+                  : require("../assets/no-image.png")
               }
             />
           ))}
@@ -81,7 +81,7 @@ function Credits({ id, isMovie }: CreditsProps) {
               image={
                 person.profile_path
                   ? getImageURL(person.profile_path, "w500")
-                  : require("../assets/nacho-icon.png")
+                  : require("../assets/no-image.png")
               }
             />
           ))}
