@@ -1,6 +1,7 @@
 import React from "react";
 import { ThemeProvider } from "styled-components";
 import AppRouter from "./AppRouter";
+import Footer from "./components/Footer";
 import { GlobalStyle, theme } from "./styles";
 
 function App() {
@@ -8,7 +9,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <AppRouter />
-      {/* <Footer /> */}
+      <Footer />
     </ThemeProvider>
   );
 }

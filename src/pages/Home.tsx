@@ -18,6 +18,7 @@ function Home() {
 
   useEffect(() => {
     async function fetchData() {
+      setLoading(true);
       try {
         const { data: nowPlaying } = await movieApi.nowPlaying();
 
@@ -34,8 +35,10 @@ function Home() {
 
   return (
     <>
-      {recommendedMovie && <RecommendedMovie movie={recommendedMovie} />}
-      <MainContainer>{loading ? <Loading /> : ""}</MainContainer>
+      {loading && <Loading />}
+      {!loading && recommendedMovie && (
+        <RecommendedMovie movie={recommendedMovie} />
+      )}
     </>
   );
 }

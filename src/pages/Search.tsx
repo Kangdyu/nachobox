@@ -48,11 +48,10 @@ function Search() {
   console.log(data.movies, data.tvShows);
 
   return (
-    <MainContainer>
-      {loading ? (
-        <Loading />
-      ) : (
-        <>
+    <>
+      {loading && <Loading />}
+      {!loading && (
+        <MainContainer>
           <Title>"{searchTerm}" 검색 결과</Title>
           {data.movies.length !== 0 && (
             <ScrollGridCategory
@@ -79,9 +78,9 @@ function Search() {
           {data.movies.length === 0 &&
             data.tvShows.length === 0 &&
             "검색 결과가 없습니다."}
-        </>
+        </MainContainer>
       )}
-    </MainContainer>
+    </>
   );
 }
 

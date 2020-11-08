@@ -18,7 +18,7 @@ export const GlobalStyle = createGlobalStyle`
 `;
 
 export const theme: DefaultTheme = {
-  footerHeight: "100px",
+  footerHeight: "120px",
   paddings: {
     containerTop: "100px",
     containerBottom: "100px",
@@ -35,8 +35,8 @@ export const theme: DefaultTheme = {
 };
 
 export const MainContainer = styled.div`
-  /* min-height: calc(100vh - ${(props) => props.theme.footerHeight}); */
   max-width: 1765px;
+  min-height: calc(100vh - ${(props) => props.theme.footerHeight});
   margin: 0 auto;
   padding: 0 ${(props) => props.theme.paddings.side};
   padding-top: ${(props) => props.theme.paddings.containerTop};

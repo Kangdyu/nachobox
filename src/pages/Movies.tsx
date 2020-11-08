@@ -35,50 +35,51 @@ function Movies() {
   }, []);
 
   return (
-    <MainContainer>
-      {loading ? (
-        <Loading />
-      ) : (
-        <>
-          <ScrollGridCategory
-            title="현재 상영중"
-            columnWidth={200}
-            gap={15}
-            scrollRatio={2}
-            listLength={data.nowPlaying.length}
-          >
-            <TVMovieGridItem list={data.nowPlaying} />
-          </ScrollGridCategory>
-          <ScrollGridCategory
-            title="개봉 예정"
-            columnWidth={200}
-            gap={15}
-            scrollRatio={2}
-            listLength={data.upcoming.length}
-          >
-            <TVMovieGridItem list={data.upcoming} />
-          </ScrollGridCategory>
-          <ScrollGridCategory
-            title="인기 영화"
-            columnWidth={200}
-            gap={15}
-            scrollRatio={2}
-            listLength={data.popular.length}
-          >
-            <TVMovieGridItem list={data.popular} />
-          </ScrollGridCategory>
-          <ScrollGridCategory
-            title="최고 평점 영화"
-            columnWidth={200}
-            gap={15}
-            scrollRatio={2}
-            listLength={data.topRated.length}
-          >
-            <TVMovieGridItem list={data.topRated} />
-          </ScrollGridCategory>
-        </>
+    <>
+      {loading && <Loading />}
+      {!loading && (
+        <MainContainer>
+          <>
+            <ScrollGridCategory
+              title="현재 상영중"
+              columnWidth={200}
+              gap={15}
+              scrollRatio={2}
+              listLength={data.nowPlaying.length}
+            >
+              <TVMovieGridItem list={data.nowPlaying} />
+            </ScrollGridCategory>
+            <ScrollGridCategory
+              title="개봉 예정"
+              columnWidth={200}
+              gap={15}
+              scrollRatio={2}
+              listLength={data.upcoming.length}
+            >
+              <TVMovieGridItem list={data.upcoming} />
+            </ScrollGridCategory>
+            <ScrollGridCategory
+              title="인기 영화"
+              columnWidth={200}
+              gap={15}
+              scrollRatio={2}
+              listLength={data.popular.length}
+            >
+              <TVMovieGridItem list={data.popular} />
+            </ScrollGridCategory>
+            <ScrollGridCategory
+              title="최고 평점 영화"
+              columnWidth={200}
+              gap={15}
+              scrollRatio={2}
+              listLength={data.topRated.length}
+            >
+              <TVMovieGridItem list={data.topRated} />
+            </ScrollGridCategory>
+          </>
+        </MainContainer>
       )}
-    </MainContainer>
+    </>
   );
 }
 

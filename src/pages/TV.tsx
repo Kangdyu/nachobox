@@ -35,50 +35,51 @@ function TV() {
   }, []);
 
   return (
-    <MainContainer>
-      {loading ? (
-        <Loading />
-      ) : (
-        <>
-          <ScrollGridCategory
-            title="오늘의 프로그램"
-            columnWidth={200}
-            gap={15}
-            scrollRatio={2}
-            listLength={data.airingToday.length}
-          >
-            <TVMovieGridItem list={data.airingToday} />
-          </ScrollGridCategory>
-          <ScrollGridCategory
-            title="현재 방영중"
-            columnWidth={200}
-            gap={15}
-            scrollRatio={2}
-            listLength={data.onTheAir.length}
-          >
-            <TVMovieGridItem list={data.onTheAir} />
-          </ScrollGridCategory>
-          <ScrollGridCategory
-            title="인기 프로그램"
-            columnWidth={200}
-            gap={15}
-            scrollRatio={2}
-            listLength={data.popular.length}
-          >
-            <TVMovieGridItem list={data.popular} />
-          </ScrollGridCategory>
-          <ScrollGridCategory
-            title="최고 평점 프로그램"
-            columnWidth={200}
-            gap={15}
-            scrollRatio={2}
-            listLength={data.topRated.length}
-          >
-            <TVMovieGridItem list={data.topRated} />
-          </ScrollGridCategory>
-        </>
+    <>
+      {loading && <Loading />}
+      {!loading && (
+        <MainContainer>
+          <>
+            <ScrollGridCategory
+              title="오늘의 프로그램"
+              columnWidth={200}
+              gap={15}
+              scrollRatio={2}
+              listLength={data.airingToday.length}
+            >
+              <TVMovieGridItem list={data.airingToday} />
+            </ScrollGridCategory>
+            <ScrollGridCategory
+              title="현재 방영중"
+              columnWidth={200}
+              gap={15}
+              scrollRatio={2}
+              listLength={data.onTheAir.length}
+            >
+              <TVMovieGridItem list={data.onTheAir} />
+            </ScrollGridCategory>
+            <ScrollGridCategory
+              title="인기 프로그램"
+              columnWidth={200}
+              gap={15}
+              scrollRatio={2}
+              listLength={data.popular.length}
+            >
+              <TVMovieGridItem list={data.popular} />
+            </ScrollGridCategory>
+            <ScrollGridCategory
+              title="최고 평점 프로그램"
+              columnWidth={200}
+              gap={15}
+              scrollRatio={2}
+              listLength={data.topRated.length}
+            >
+              <TVMovieGridItem list={data.topRated} />
+            </ScrollGridCategory>
+          </>
+        </MainContainer>
       )}
-    </MainContainer>
+    </>
   );
 }
 
