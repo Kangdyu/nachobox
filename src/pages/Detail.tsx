@@ -10,9 +10,11 @@ import { isMovieDetail } from "../common/typeGuards";
 
 import BackdropImage from "../components/BackdropImage";
 import Credits from "../components/Credits";
+import GridItem from "../components/GridItem";
 import Loading from "../components/Loading";
 import Recommendations from "../components/Recommendations";
 import RelatedVideos from "../components/RelatedVideos";
+import ScrollGridCategory from "../components/ScrollGridCategory";
 import SquareButton from "../components/SquareButton";
 import { MainContainer } from "../styles";
 
@@ -195,6 +197,29 @@ function Detail() {
             </MainGrid>
             <RelatedVideos id={data.id} isMovie={isMovie} />
             <Credits id={data.id} isMovie={isMovie} />
+            {data.production_companies.length !== 0 && (
+              <ScrollGridCategory
+                title="제작사"
+                columnWidth={200}
+                gap={15}
+                scrollRatio={2}
+                listLength={data.production_companies.length}
+              >
+                {data.production_companies.map((company) => (
+                  <GridItem
+                    key={company.id}
+                    title={company.name}
+                    subtitle={company.origin_country}
+                    image={
+                      company.logo_path
+                        ? getPosterURL(company.logo_path, "w500")
+                        : require("../assets/no-image.png")
+                    }
+                    heightRatio={0.4}
+                  />
+                ))}
+              </ScrollGridCategory>
+            )}
             <Recommendations id={data.id} isMovie={isMovie} />
           </>
         )

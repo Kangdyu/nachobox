@@ -43,7 +43,7 @@ function Credits({ id, isMovie }: CreditsProps) {
 
   return (
     <>
-      {data.cast !== [] && (
+      {data.cast.length !== 0 && (
         <ScrollGridCategory
           title="배우"
           columnWidth={200}
@@ -65,7 +65,7 @@ function Credits({ id, isMovie }: CreditsProps) {
           ))}
         </ScrollGridCategory>
       )}
-      {data.crew !== [] && (
+      {data.crew.length !== 0 && (
         <ScrollGridCategory
           title="제작진"
           columnWidth={200}

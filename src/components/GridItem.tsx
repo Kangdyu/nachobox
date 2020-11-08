@@ -64,7 +64,7 @@ function GridItem({
       elem.style.height =
         elem.getBoundingClientRect().width * heightRatio + "px";
     }
-  }, []);
+  }, [heightRatio]);
 
   return (
     <Container>

@@ -44,9 +44,9 @@ function Recommendations({ id, isMovie }: RecommendationsProps) {
 
   return (
     <>
-      {recommendations !== [] && (
+      {recommendations.length !== 0 && (
         <ScrollGridCategory
-          title="추천 영화"
+          title={isMovie ? "추천 영화" : "추천 TV 프로그램"}
           columnWidth={200}
           gap={15}
           scrollRatio={2}
