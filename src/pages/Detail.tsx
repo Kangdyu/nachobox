@@ -155,13 +155,19 @@ function Detail() {
                     <DetailItem>
                       {isMovieDetail(data)
                         ? data.release_date + " 개봉"
-                        : `첫 방영일: ${data.first_air_date} / 마지막 방영일: ${data.last_air_date}`}
+                        : `첫 방영일: ${data.first_air_date}`}
                     </DetailItem>
+                    {!isMovieDetail(data) && (
+                      <DetailItem>{`마지막 방영일: ${data.last_air_date}`}</DetailItem>
+                    )}
                     <DetailItem>
                       {isMovieDetail(data)
                         ? data.runtime + "분"
                         : "시즌 " + data.number_of_seasons + "개"}
                     </DetailItem>
+                    {!isMovieDetail(data) && (
+                      <DetailItem>{`총 에피소드 ${data.number_of_episodes}개`}</DetailItem>
+                    )}
                     {isMovieDetail(data) && (
                       <DetailItem>
                         <IMDBIcon
@@ -195,6 +201,29 @@ function Detail() {
                 </ButtonContainer>
               </InfoContainer>
             </MainGrid>
+
+            {!isMovieDetail(data) && (
+              <ScrollGridCategory
+                title="시즌 정보"
+                columnWidth={200}
+                gap={15}
+                scrollRatio={2}
+                listLength={data.seasons.length}
+              >
+                {data.seasons.map((season) => (
+                  <GridItem
+                    key={season.id}
+                    title={season.name}
+                    subtitle={`에피소드 ${season.episode_count}개`}
+                    image={
+                      season.poster_path
+                        ? getPosterURL(season.poster_path, "w500")
+                        : require("../assets/no-image.png")
+                    }
+                  />
+                ))}
+              </ScrollGridCategory>
+            )}
             <RelatedVideos id={data.id} isMovie={isMovie} />
             <Credits id={data.id} isMovie={isMovie} />
             {data.production_companies.length !== 0 && (

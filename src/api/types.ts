@@ -67,6 +67,16 @@ export interface Creator {
   profile_path: string;
 }
 
+export interface Season {
+  air_date: string;
+  episode_count: number;
+  id: number;
+  name: string;
+  overview: string;
+  poster_path: string;
+  season_number: number;
+}
+
 export interface TVDetail extends TVListItem {
   created_by: Creator[];
   episode_run_time: number[];
@@ -93,15 +103,7 @@ export interface TVDetail extends TVListItem {
   number_of_seasons: number;
   origin_country: string[];
   production_companies: ProductionCompany[];
-  seasons: {
-    air_date: string;
-    episode_count: number;
-    id: number;
-    name: string;
-    overview: string;
-    poster_path: string;
-    season_number: number;
-  };
+  seasons: Season[];
   status: string;
   type: string;
 }
