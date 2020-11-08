@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { movieApi, tvApi } from "../api/api";
 import { CreditsInfo } from "../api/types";
-import getImageURL from "../common/getImageURL";
+import { getPosterURL } from "../common/imageGetter";
 import GridItem from "./GridItem";
 import ScrollGridCategory from "./ScrollGridCategory";
 
@@ -58,7 +58,7 @@ function Credits({ id, isMovie }: CreditsProps) {
               subtitle={person.character}
               image={
                 person.profile_path
-                  ? getImageURL(person.profile_path, "w500")
+                  ? getPosterURL(person.profile_path, "w500")
                   : require("../assets/no-image.png")
               }
             />
@@ -80,7 +80,7 @@ function Credits({ id, isMovie }: CreditsProps) {
               subtitle={person.job}
               image={
                 person.profile_path
-                  ? getImageURL(person.profile_path, "w500")
+                  ? getPosterURL(person.profile_path, "w500")
                   : require("../assets/no-image.png")
               }
             />

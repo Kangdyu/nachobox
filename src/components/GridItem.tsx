@@ -43,18 +43,26 @@ const Subtitle = styled.h3`
 
 type GridItemProps = {
   title: string;
-  subtitle: string;
+  subtitle?: string;
   image: string;
+  heightRatio?: number;
   children?: React.ReactNode;
 };
 
-function GridItem({ title, subtitle, image, children }: GridItemProps) {
+function GridItem({
+  title,
+  subtitle,
+  image,
+  heightRatio = 1.5,
+  children,
+}: GridItemProps) {
   const imageRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     if (imageRef.current) {
       const { current: elem } = imageRef;
-      elem.style.height = elem.getBoundingClientRect().width * 1.5 + "px";
+      elem.style.height =
+        elem.getBoundingClientRect().width * heightRatio + "px";
     }
   }, []);
 

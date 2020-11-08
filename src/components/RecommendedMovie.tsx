@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { MovieListItem } from "../api/types";
-import getImageURL from "../common/getImageURL";
+import { getPosterURL } from "../common/imageGetter";
 import BackdropImage from "./BackdropImage";
 import SquareButton from "./SquareButton";
 
@@ -61,7 +61,7 @@ function RecommendedMovie({ movie }: RecommendedMovieProps) {
   return (
     <Container>
       {movie.backdrop_path && (
-        <BackdropImage image={getImageURL(movie.backdrop_path, "original")} />
+        <BackdropImage image={getPosterURL(movie.backdrop_path, "original")} />
       )}
       <InfoOverlay>
         <Title>{movie.title}</Title>

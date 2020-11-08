@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { movieApi, tvApi } from "../api/api";
 import { MovieDetail, TVDetail } from "../api/types";
 
-import getImageURL from "../common/getImageURL";
+import { getPosterURL } from "../common/imageGetter";
 import { isMovieDetail } from "../common/typeGuards";
 
 import BackdropImage from "../components/BackdropImage";
@@ -135,14 +135,14 @@ function Detail() {
           <>
             {data.backdrop_path && (
               <BackdropImage
-                image={getImageURL(data.backdrop_path, "original")}
+                image={getPosterURL(data.backdrop_path, "original")}
               />
             )}
             <MainGrid>
               <Poster
                 src={
                   data.poster_path
-                    ? getImageURL(data.poster_path, "w500")
+                    ? getPosterURL(data.poster_path, "w500")
                     : require("../assets/nacho-icon.png")
                 }
               />
@@ -193,7 +193,7 @@ function Detail() {
                 </ButtonContainer>
               </InfoContainer>
             </MainGrid>
-            <RelatedVideos />
+            <RelatedVideos id={data.id} isMovie={isMovie} />
             <Credits id={data.id} isMovie={isMovie} />
             <Recommendations id={data.id} isMovie={isMovie} />
           </>

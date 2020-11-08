@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { MovieListItem, TVListItem } from "../api/types";
-import getImageURL from "../common/getImageURL";
+import { getPosterURL } from "../common/imageGetter";
 import { isMovieListItem } from "../common/typeGuards";
 import GridItem from "./GridItem";
 import TVMovieOverlay from "./TVMovieOverlay";
@@ -27,7 +27,7 @@ function TVMovieGridItem({ list }: TVMovieGridItemProps) {
           <GridItem
             image={
               item.poster_path
-                ? getImageURL(item.poster_path, "w500")
+                ? getPosterURL(item.poster_path, "w500")
                 : require("../assets/no-image.png")
             }
             title={isMovieListItem(item) ? item.title : item.name}
