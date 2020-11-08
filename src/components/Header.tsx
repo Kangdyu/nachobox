@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import useScroll from "../hooks/useScroll";
 
 const Container = styled.header<{ transparent: boolean }>`
@@ -14,9 +14,22 @@ const Container = styled.header<{ transparent: boolean }>`
   display: flex;
   justify-content: space-between;
 
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+
   background-color: ${(props) =>
     props.transparent ? "transparent" : props.theme.colors.main};
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  ${({ transparent, theme }) =>
+    transparent &&
+    css`
+      & input {
+        background-color: transparent;
+        box-shadow: 0 0 0 1px ${theme.colors.gray} inset;
+
+        &::placeholder {
+          color: ${theme.colors.gray};
+        }
+      }
+    `}
 
   transition: background-color 0.2s linear;
   will-change: background-color;
@@ -41,7 +54,7 @@ const Tab = styled(Link)<{ $isCurrent: boolean }>`
   text-decoration: none;
   color: inherit;
 
-  width: 70px;
+  width: 100px;
   height: 100%;
 
   display: flex;
@@ -60,18 +73,34 @@ const Tab = styled(Link)<{ $isCurrent: boolean }>`
 `;
 
 const SearchForm = styled.form`
+  position: relative;
   width: 400px;
+
+  i {
+    position: absolute;
+    left: 15px;
+    top: 10px;
+  }
 `;
 
 const SearchInput = styled.input`
   width: 100%;
   padding: 5px 15px;
+  padding-left: 40px;
   border-radius: 20px;
   border: none;
   outline: none;
   background-color: ${({ theme }) => theme.colors.secondary};
   font: inherit;
   color: inherit;
+
+  transition-property: background-color box-shadow;
+  transition-duration: 0.2s;
+  transition-timing-function: linear;
+
+  &::placeholder {
+    transition: color 0.2s linear;
+  }
 `;
 
 function Header() {
@@ -97,14 +126,15 @@ function Header() {
           <img src={require("../assets/nacho-icon.png")} alt="icon" />
         </Icon>
         <Tab to="/movies" $isCurrent={pathname.split("/")[1] === "movies"}>
-          Movies
+          영화
         </Tab>
         <Tab to="/tv" $isCurrent={pathname.split("/")[1] === "tv"}>
-          TV
+          TV 프로그램
         </Tab>
       </Column>
       <Column>
         <SearchForm onSubmit={onSubmit}>
+          <i className="fas fa-search"></i>
           <SearchInput
             value={searchTerm}
             onChange={onSearchTermChange}
