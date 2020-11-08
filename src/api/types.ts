@@ -174,6 +174,9 @@ export interface MovieApiObject {
   recommendations: (
     id: number
   ) => Promise<AxiosResponse<CategoryList<MovieListItem>>>;
+  search: (
+    query: string
+  ) => Promise<AxiosResponse<CategoryList<MovieListItem>>>;
 }
 
 export interface TVApiObject {
@@ -187,4 +190,5 @@ export interface TVApiObject {
   recommendations: (
     id: number
   ) => Promise<AxiosResponse<CategoryList<TVListItem>>>;
+  search: (query: string) => Promise<AxiosResponse<CategoryList<TVListItem>>>;
 }

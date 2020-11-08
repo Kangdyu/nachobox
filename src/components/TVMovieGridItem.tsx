@@ -33,8 +33,8 @@ function TVMovieGridItem({ list }: TVMovieGridItemProps) {
             title={isMovieListItem(item) ? item.title : item.name}
             subtitle={
               isMovieListItem(item)
-                ? item.release_date.split("-")[0]
-                : item.first_air_date.split("-")[0]
+                ? item.release_date && item.release_date.split("-")[0]
+                : item.first_air_date && item.first_air_date.split("-")[0]
             }
           >
             <TVMovieOverlay item={item} />

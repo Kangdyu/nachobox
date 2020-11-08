@@ -38,6 +38,8 @@ export const movieApi: MovieApiObject = {
   videos: (id: number) => instance.get(`/movie/${id}/videos`),
   credits: (id: number) => instance.get(`/movie/${id}/credits`),
   recommendations: (id: number) => instance.get(`/movie/${id}/recommendations`),
+  search: (query: string) =>
+    instance.get(`/search/movie`, { params: { query, region: "KR" } }),
 };
 
 export const tvApi: TVApiObject = {
@@ -49,4 +51,5 @@ export const tvApi: TVApiObject = {
   videos: (id: number) => instance.get(`/tv/${id}/videos`),
   credits: (id: number) => instance.get(`/tv/${id}/credits`),
   recommendations: (id: number) => instance.get(`/tv/${id}/recommendations`),
+  search: (query: string) => instance.get(`/search/tv`, { params: { query } }),
 };
