@@ -3,7 +3,6 @@ import { movieApi } from "../api/api";
 import { MovieListItem } from "../api/types";
 import Loading from "../components/Loading";
 import RecommendedMovie from "../components/RecommendedMovie";
-import { MainContainer } from "../styles";
 
 function getRecommendedMovie(movieList: MovieListItem[]) {
   const filtered = movieList.filter((movie) => movie.backdrop_path);

@@ -38,15 +38,6 @@ const ButtonContainer = styled.div`
   left: 5%;
   bottom: 25vh;
   display: flex;
-  justify-content: space-between;
-`;
-
-const ButtonColumn = styled.div`
-  button {
-    &:not(:last-child) {
-      margin-right: 20px;
-    }
-  }
 `;
 
 const StyledLink = styled(Link)`
@@ -68,21 +59,11 @@ function RecommendedMovie({ movie }: RecommendedMovieProps) {
         <Description>{movie.overview}</Description>
       </InfoOverlay>
       <ButtonContainer>
-        <ButtonColumn>
-          <StyledLink to={`/movies/${movie.id}`}>
-            <SquareButton size="big" bgColor="main">
-              상세보기
-            </SquareButton>
-          </StyledLink>
-        </ButtonColumn>
-        <ButtonColumn>
+        <StyledLink to={`/movies/${movie.id}`}>
           <SquareButton size="big" bgColor="main">
-            + 내가 찜한 콘텐츠
+            상세보기
           </SquareButton>
-          <SquareButton size="big" bgColor="main">
-            ♡ 좋아요
-          </SquareButton>
-        </ButtonColumn>
+        </StyledLink>
       </ButtonContainer>
     </Container>
   );

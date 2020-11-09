@@ -91,15 +91,15 @@ const Button = styled.button<StyleProps>`
   transition-timing-function: linear;
 `;
 
-type SquareButtonProps = StyleProps & {
-  children?: React.ReactNode;
-};
+type SquareButtonProps = StyleProps &
+  React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 function SquareButton({
   bgColor,
   color,
   size,
   outline,
+  onClick,
   children,
   ...rest
 }: SquareButtonProps) {
@@ -109,6 +109,7 @@ function SquareButton({
       color={color}
       size={size}
       outline={outline}
+      onClick={onClick}
       {...rest}
     >
       {children}

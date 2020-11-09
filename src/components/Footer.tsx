@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -30,6 +31,10 @@ const APICopyright = styled.span`
 `;
 
 function Footer() {
+  const { pathname } = useLocation();
+
+  if (pathname === "/") return null;
+
   return (
     <Container>
       <Icon href="https://github.com/Kangdyu/nachobox" target="_blank">

@@ -15,7 +15,6 @@ import Loading from "../components/Loading";
 import Recommendations from "../components/Recommendations";
 import RelatedVideos from "../components/RelatedVideos";
 import ScrollGridCategory from "../components/ScrollGridCategory";
-import SquareButton from "../components/SquareButton";
 import { MainContainer } from "../styles";
 
 const MainGrid = styled.div`
@@ -38,15 +37,6 @@ const InfoContainer = styled.div`
 `;
 
 const MovieInfoContainer = styled.div``;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-
-  button:not(:last-child) {
-    margin-right: 15px;
-  }
-`;
 
 const Title = styled.h1`
   font-size: 2.5rem;
@@ -197,10 +187,6 @@ function Detail() {
                         : "등록된 소개글이 없습니다."}
                     </Overview>
                   </MovieInfoContainer>
-                  <ButtonContainer>
-                    <SquareButton size="big">찜하기</SquareButton>
-                    <SquareButton size="big">좋아요</SquareButton>
-                  </ButtonContainer>
                 </InfoContainer>
               </MainGrid>
 

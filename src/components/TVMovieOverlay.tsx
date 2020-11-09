@@ -17,6 +17,7 @@ const Overlay = styled.div`
   transition: opacity 0.3s ease-in-out;
 
   padding: 5px 10px;
+  padding-top: 20px;
   display: flex;
   flex-direction: column;
 `;
@@ -24,11 +25,6 @@ const Overlay = styled.div`
 const OverlayRow = styled.div`
   display: flex;
   padding: 5px 0;
-`;
-
-const OverlayStatusBar = styled(OverlayRow)`
-  font-size: 1.2rem;
-  justify-content: space-between;
 `;
 
 const OverlayTitle = styled(OverlayRow)`
@@ -53,10 +49,6 @@ type TVMovieOverlayProps = {
 function TVMovieOverlay({ item }: TVMovieOverlayProps) {
   return (
     <Overlay>
-      <OverlayStatusBar>
-        <span>+</span>
-        <span>♡</span>
-      </OverlayStatusBar>
       <OverlayTitle>
         {isMovieListItem(item) ? item.title : item.name}
       </OverlayTitle>
