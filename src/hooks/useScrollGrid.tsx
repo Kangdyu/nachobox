@@ -1,7 +1,4 @@
-// TODO: 리스트의 총 width가 grid container의 width보다 적을 시, 스크롤을 비활성화 (ref를 useEffect에서 처리해야함)
-// TODO: window resize에 핸들러를 달아서 위의 경우에서 스크롤이 필요한 경우로 스위칭 시 스크롤 활성화
-
-import { useRef, useReducer } from "react";
+import { useRef, useReducer, useEffect, useState } from "react";
 
 interface Scroll {
   amount: number;
@@ -80,15 +77,41 @@ function useScrollGrid({
 }: useScrollGridProps) {
   const [scroll, dispatch] = useReducer(reducer, INITIAL_STATE);
   const gridRef = useRef() as React.RefObject<HTMLDivElement>;
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [maxScrollLimit, setMaxScrollLimit] = useState(0);
 
   const scrollAmount = (columnWidth + gap) * scrollRatio;
-  const containerWidth = gridRef.current?.getBoundingClientRect()
-    .width as number;
-  const maxScrollLimit = -(
-    listLength * (columnWidth + gap) -
-    gap -
-    containerWidth
-  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (gridRef.current) {
+        setContainerWidth(
+          gridRef.current?.getBoundingClientRect().width as number
+        );
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [gridRef]);
+
+  useEffect(() => {
+    setMaxScrollLimit(
+      -(listLength * (columnWidth + gap) - gap - containerWidth)
+    );
+  }, [listLength, columnWidth, gap, containerWidth]);
+
+  useEffect(() => {
+    if (maxScrollLimit >= 0) {
+      dispatch(setIsRightEnd(true));
+    } else {
+      dispatch(setIsRightEnd(false));
+    }
+  }, [maxScrollLimit]);
 
   const onScrollLeft = () => {
     // +
