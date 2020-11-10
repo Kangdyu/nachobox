@@ -17,6 +17,7 @@ import Recommendations from "../components/Recommendations";
 import RelatedVideos from "../components/RelatedVideos";
 import ScrollGridCategory from "../components/ScrollGridCategory";
 import { MainContainer } from "../styles";
+import PageNotFound from "../components/PageNotFound";
 
 const MainGrid = styled.div`
   display: grid;
@@ -171,9 +172,9 @@ function Detail() {
     <>
       {loading && <Loading />}
       {!loading && (
-        <MainContainer>
-          {data && (
-            <>
+        <>
+          {data ? (
+            <MainContainer>
               <Helmet>
                 <title>
                   {isMovieDetail(data)
@@ -191,7 +192,7 @@ function Detail() {
                   src={
                     data.poster_path
                       ? getPosterURL(data.poster_path, "w500")
-                      : require("../assets/nacho-icon.png")
+                      : require("../assets/no-image.png")
                   }
                 />
                 <InfoContainer>
@@ -246,7 +247,7 @@ function Detail() {
                 </InfoContainer>
               </MainGrid>
 
-              {!isMovieDetail(data) && (
+              {!isMovieDetail(data) && data.seasons.length !== 0 && (
                 <ScrollGridCategory
                   title="시즌 정보"
                   columnWidth={200}
@@ -294,9 +295,11 @@ function Detail() {
                 </ScrollGridCategory>
               )}
               <Recommendations id={data.id} isMovie={isMovie} />
-            </>
+            </MainContainer>
+          ) : (
+            <PageNotFound />
           )}
-        </MainContainer>
+        </>
       )}
     </>
   );

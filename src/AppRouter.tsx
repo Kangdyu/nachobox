@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
+import PageNotFound from "./components/PageNotFound";
 import Detail from "./pages/Detail";
 import Home from "./pages/Home";
 import Movies from "./pages/Movies";
@@ -30,6 +31,9 @@ function AppRouter() {
         </Route>
         <Route path="/search">
           <Search />
+        </Route>
+        <Route path="*">
+          <PageNotFound />
         </Route>
       </Switch>
       <Footer />
