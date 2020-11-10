@@ -2,13 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import styled, { css, keyframes } from "styled-components";
 import useScroll from "../hooks/useScroll";
+import HamburgerMenu from "./HamburgerMenu";
 
 const Container = styled.header<{ transparent: boolean }>`
   position: fixed;
   z-index: 999;
 
   width: 100%;
-  height: 60px;
+  height: ${(props) => props.theme.headerHeight};
   padding: 0 ${(props) => props.theme.paddings.side};
 
   display: flex;
@@ -41,6 +42,36 @@ const Column = styled.div`
   height: 100%;
 `;
 
+const DarkBackground = styled.div<{ visible: boolean }>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: ${({ visible }) => (visible ? "block" : "none")};
+`;
+
+const HamburgerButton = styled.button`
+  border: none;
+  outline: none;
+  background-color: transparent;
+  padding: 0;
+  cursor: pointer;
+  margin-right: 20px;
+  display: none;
+
+  i {
+    font-size: 1.2rem;
+    color: white;
+  }
+
+  @media only screen and (max-width: ${({ theme }) =>
+      theme.responsive.mobile}) {
+    display: block;
+  }
+`;
+
 const Icon = styled(Link)`
   margin-right: 19px;
 
@@ -51,6 +82,7 @@ const Icon = styled(Link)`
 `;
 
 const Tab = styled(Link)<{ $isCurrent: boolean }>`
+  display: block;
   text-decoration: none;
   color: inherit;
 
@@ -70,29 +102,28 @@ const Tab = styled(Link)<{ $isCurrent: boolean }>`
   }
 
   transition: border-bottom 0.2s linear;
+
+  @media only screen and (max-width: ${({ theme }) =>
+      theme.responsive.mobile}) {
+    display: none;
+  }
 `;
 
 const SearchButton = styled.button<{ visible: boolean }>`
   border: none;
   outline: none;
   background-color: transparent;
-  color: white;
-  width: 50px;
-  height: 50px;
-  font-size: 1.5rem;
   cursor: pointer;
   display: ${({ visible }) => (visible ? "block" : "none")};
+
+  i {
+    font-size: 1.2rem;
+    color: white;
+  }
 
   @media only screen and (min-width: 769px) {
     display: none;
   }
-`;
-
-const SearchFormBackground = styled.div`
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: none;
 `;
 
 const searchFormAnimation = keyframes`
@@ -118,8 +149,8 @@ const SearchForm = styled.form<{ visible: boolean }>`
     left: 0;
     display: ${({ visible }) => (visible ? "block" : "none")};
     width: 100vw;
-    height: 60px;
-    z-index: 1000;
+    height: ${(props) => props.theme.headerHeight};
+    z-index: 1001;
     transform: translateY(-60px);
     animation: ${searchFormAnimation} 0.2s ease-in-out forwards;
 
@@ -128,7 +159,7 @@ const SearchForm = styled.form<{ visible: boolean }>`
       top: 17px;
     }
 
-    ${SearchFormBackground} {
+    ${DarkBackground} {
       display: ${({ visible }) => (visible ? "block" : "none")};
     }
   }
@@ -167,6 +198,7 @@ const SearchInput = styled.input`
 function Header() {
   const { pathname } = useLocation();
   const scroll = useScroll();
+  const [hamburgerMenu, setHamburgerMenu] = useState(false);
   const [searchFormOnMobile, setSearchFormOnMobile] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -177,6 +209,10 @@ function Header() {
       searchInputRef.current?.focus();
     }
   }, [searchFormOnMobile]);
+
+  const onClickHamburgerButton = () => {
+    setHamburgerMenu(true);
+  };
 
   const onClickSearchButton = () => {
     setSearchFormOnMobile(true);
@@ -199,7 +235,11 @@ function Header() {
 
   return (
     <Container transparent={scroll === 0}>
+      <HamburgerMenu setVisible={setHamburgerMenu} visible={hamburgerMenu} />
       <Column>
+        <HamburgerButton onClick={onClickHamburgerButton}>
+          <i className="fas fa-bars"></i>
+        </HamburgerButton>
         <Icon to="/">
           <img src={require("../assets/nacho-icon.png")} alt="icon" />
         </Icon>
@@ -217,16 +257,24 @@ function Header() {
         >
           <i className="fas fa-search"></i>
         </SearchButton>
-        <SearchForm onSubmit={onSubmit} visible={searchFormOnMobile}>
-          <i className="fas fa-search"></i>
-          <SearchInput
-            ref={searchInputRef}
-            value={searchTerm}
-            onChange={onSearchTermChange}
-            placeholder="작품 제목을 검색해보세요."
-          />
-          <SearchFormBackground onClick={onClickSearchFormBackground} />
-        </SearchForm>
+        <DarkBackground
+          onClick={onClickSearchFormBackground}
+          visible={searchFormOnMobile}
+        >
+          <SearchForm
+            onSubmit={onSubmit}
+            visible={searchFormOnMobile}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <i className="fas fa-search"></i>
+            <SearchInput
+              ref={searchInputRef}
+              value={searchTerm}
+              onChange={onSearchTermChange}
+              placeholder="작품 제목을 검색해보세요."
+            />
+          </SearchForm>
+        </DarkBackground>
       </Column>
     </Container>
   );

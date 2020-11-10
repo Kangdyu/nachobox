@@ -18,6 +18,7 @@ export const GlobalStyle = createGlobalStyle`
 `;
 
 export const theme: DefaultTheme = {
+  headerHeight: "60px",
   footerHeight: "120px",
   paddings: {
     containerTop: "100px",

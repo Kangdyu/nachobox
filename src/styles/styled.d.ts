@@ -2,6 +2,7 @@ import "styled-components";
 
 declare module "styled-components" {
   export interface DefaultTheme {
+    headerHeight: string;
     footerHeight: string;
     paddings: {
       containerTop: string;
