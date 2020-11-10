@@ -76,6 +76,7 @@ const Title = styled.h1`
   @media only screen and (max-width: ${({ theme }) =>
       theme.responsive.pcSmall}) {
     font-size: 2rem;
+    text-align: center;
   }
 `;
 
