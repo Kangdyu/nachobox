@@ -128,7 +128,7 @@ const SearchForm = styled.form`
   }
 
   @media only screen and (max-width: ${({ theme }) =>
-      theme.responsive.mobile}) {
+      theme.responsive.tablet}) {
     display: none;
   }
 `;
