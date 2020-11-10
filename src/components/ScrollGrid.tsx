@@ -38,6 +38,13 @@ const Container = styled.div`
   &:hover ${ScrollButton} {
     opacity: 1;
   }
+
+  @media only screen and (max-width: ${({ theme }) =>
+      theme.responsive.pcSmall}) {
+    ${ScrollButton} {
+      opacity: 1;
+    }
+  }
 `;
 
 const Grid = styled.div<{ columnWidth: number; gap: number; scroll: number }>`
