@@ -32,6 +32,11 @@ export const theme: DefaultTheme = {
     gray: "#aaa",
     white: "#fbfbf9",
   },
+  responsive: {
+    pcSmall: "1200px",
+    tablet: "768px",
+    mobile: "500px",
+  },
 };
 
 export const MainContainer = styled.div`

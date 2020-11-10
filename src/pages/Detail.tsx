@@ -23,12 +23,14 @@ const MainGrid = styled.div`
   gap: 40px;
   margin-bottom: 100px;
 
-  @media only screen and (max-width: 1200px) {
+  @media only screen and (max-width: ${({ theme }) =>
+      theme.responsive.pcSmall}) {
     grid-template-columns: none;
     grid-template-rows: auto auto;
   }
 
-  @media only screen and (max-width: 768px) {
+  @media only screen and (max-width: ${({ theme }) =>
+      theme.responsive.tablet}) {
   }
 `;
 
@@ -36,12 +38,14 @@ const Poster = styled.img`
   width: 100%;
   height: auto;
 
-  @media only screen and (max-width: 1200px) {
+  @media only screen and (max-width: ${({ theme }) =>
+      theme.responsive.pcSmall}) {
     width: 20%;
     margin: 0 auto;
   }
 
-  @media only screen and (max-width: 768px) {
+  @media only screen and (max-width: ${({ theme }) =>
+      theme.responsive.tablet}) {
     width: 30%;
     margin: 0 auto;
   }
@@ -56,7 +60,8 @@ const MovieInfoContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
-  @media only screen and (max-width: 1200px) {
+  @media only screen and (max-width: ${({ theme }) =>
+      theme.responsive.pcSmall}) {
     align-items: center;
   }
 `;
@@ -66,7 +71,8 @@ const Title = styled.h1`
   font-weight: 700;
   margin-bottom: 15px;
 
-  @media only screen and (max-width: 1200px) {
+  @media only screen and (max-width: ${({ theme }) =>
+      theme.responsive.pcSmall}) {
     font-size: 2rem;
   }
 `;
@@ -76,7 +82,8 @@ const DetailsContainer = styled.div`
   align-items: center;
   margin-bottom: 20px;
 
-  @media only screen and (max-width: 1200px) {
+  @media only screen and (max-width: ${({ theme }) =>
+      theme.responsive.pcSmall}) {
     font-size: 0.9rem;
   }
 `;
@@ -113,7 +120,8 @@ const Rating = styled.span`
   font-weight: 700;
   color: ${({ theme }) => theme.colors.highlight};
 
-  @media only screen and (max-width: 1200px) {
+  @media only screen and (max-width: ${({ theme }) =>
+      theme.responsive.pcSmall}) {
     font-size: 1.2rem;
   }
 `;
@@ -123,7 +131,8 @@ const Overview = styled.div`
   line-height: 2;
   margin-top: 30px;
 
-  @media only screen and (max-width: 1200px) {
+  @media only screen and (max-width: ${({ theme }) =>
+      theme.responsive.pcSmall}) {
     font-size: 1rem;
   }
 `;

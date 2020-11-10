@@ -17,5 +17,10 @@ declare module "styled-components" {
       gray: string;
       white: string;
     };
+    responsive: {
+      pcSmall: string;
+      tablet: string;
+      mobile: string;
+    };
   }
 }

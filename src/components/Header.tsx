@@ -111,7 +111,8 @@ const SearchForm = styled.form<{ visible: boolean }>`
     top: 10px;
   }
 
-  @media only screen and (max-width: 768px) {
+  @media only screen and (max-width: ${({ theme }) =>
+      theme.responsive.tablet}) {
     position: absolute;
     top: 0;
     left: 0;
@@ -152,7 +153,8 @@ const SearchInput = styled.input`
     transition: color 0.2s linear;
   }
 
-  @media only screen and (max-width: 768px) {
+  @media only screen and (max-width: ${({ theme }) =>
+      theme.responsive.tablet}) {
     height: 100%;
     background-color: ${({ theme }) => theme.colors.secondary} !important;
     box-shadow: none !important;
