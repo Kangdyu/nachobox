@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import styled, { css, keyframes } from "styled-components";
+import styled, { css } from "styled-components";
 import useScroll from "../hooks/useScroll";
 import HamburgerMenu from "./HamburgerMenu";
+import MobileSearchForm from "./MobileSearchForm";
 
 const Container = styled.header<{ transparent: boolean }>`
   position: fixed;
@@ -40,16 +41,6 @@ const Column = styled.div`
   display: flex;
   align-items: center;
   height: 100%;
-`;
-
-const DarkBackground = styled.div<{ visible: boolean }>`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: ${({ visible }) => (visible ? "block" : "none")};
 `;
 
 const HamburgerButton = styled.button`
@@ -109,12 +100,11 @@ const Tab = styled(Link)<{ $isCurrent: boolean }>`
   }
 `;
 
-const SearchButton = styled.button<{ visible: boolean }>`
+const SearchButton = styled.button`
   border: none;
   outline: none;
   background-color: transparent;
   cursor: pointer;
-  display: ${({ visible }) => (visible ? "block" : "none")};
 
   i {
     font-size: 1.2rem;
@@ -126,13 +116,8 @@ const SearchButton = styled.button<{ visible: boolean }>`
   }
 `;
 
-const searchFormAnimation = keyframes`
-  100% {
-    transform: translateY(0);
-  }
-`;
-
-const SearchForm = styled.form<{ visible: boolean }>`
+const SearchForm = styled.form`
+  display: block;
   position: relative;
   width: 400px;
 
@@ -143,25 +128,8 @@ const SearchForm = styled.form<{ visible: boolean }>`
   }
 
   @media only screen and (max-width: ${({ theme }) =>
-      theme.responsive.tablet}) {
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: ${({ visible }) => (visible ? "block" : "none")};
-    width: 100vw;
-    height: ${(props) => props.theme.headerHeight};
-    z-index: 1001;
-    transform: translateY(-60px);
-    animation: ${searchFormAnimation} 0.2s ease-in-out forwards;
-
-    i {
-      font-size: 1.5rem;
-      top: 17px;
-    }
-
-    ${DarkBackground} {
-      display: ${({ visible }) => (visible ? "block" : "none")};
-    }
+      theme.responsive.mobile}) {
+    display: none;
   }
 `;
 
@@ -183,16 +151,6 @@ const SearchInput = styled.input`
   &::placeholder {
     transition: color 0.2s linear;
   }
-
-  @media only screen and (max-width: ${({ theme }) =>
-      theme.responsive.tablet}) {
-    height: 100%;
-    background-color: ${({ theme }) => theme.colors.secondary} !important;
-    box-shadow: none !important;
-    padding-left: 55px;
-    font-size: 1.1rem;
-    border-radius: 30px;
-  }
 `;
 
 function Header() {
@@ -201,32 +159,12 @@ function Header() {
   const [hamburgerMenu, setHamburgerMenu] = useState(false);
   const [searchFormOnMobile, setSearchFormOnMobile] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const searchInputRef = useRef<HTMLInputElement>(null);
   const history = useHistory();
-
-  useEffect(() => {
-    if (searchFormOnMobile) {
-      searchInputRef.current?.focus();
-    }
-  }, [searchFormOnMobile]);
-
-  const onClickHamburgerButton = () => {
-    setHamburgerMenu(true);
-  };
-
-  const onClickSearchButton = () => {
-    setSearchFormOnMobile(true);
-  };
-
-  const onClickSearchFormBackground = () => {
-    setSearchFormOnMobile(false);
-  };
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     history.push(`/search?term=${searchTerm}`);
     setSearchTerm("");
-    setSearchFormOnMobile(false);
   };
 
   const onSearchTermChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -235,9 +173,8 @@ function Header() {
 
   return (
     <Container transparent={scroll === 0}>
-      <HamburgerMenu setVisible={setHamburgerMenu} visible={hamburgerMenu} />
       <Column>
-        <HamburgerButton onClick={onClickHamburgerButton}>
+        <HamburgerButton onClick={() => setHamburgerMenu(true)}>
           <i className="fas fa-bars"></i>
         </HamburgerButton>
         <Icon to="/">
@@ -251,31 +188,23 @@ function Header() {
         </Tab>
       </Column>
       <Column>
-        <SearchButton
-          onClick={onClickSearchButton}
-          visible={!searchFormOnMobile}
-        >
+        <SearchButton onClick={() => setSearchFormOnMobile(true)}>
           <i className="fas fa-search"></i>
         </SearchButton>
-        <DarkBackground
-          onClick={onClickSearchFormBackground}
-          visible={searchFormOnMobile}
-        >
-          <SearchForm
-            onSubmit={onSubmit}
-            visible={searchFormOnMobile}
-            onClick={(event) => event.stopPropagation()}
-          >
-            <i className="fas fa-search"></i>
-            <SearchInput
-              ref={searchInputRef}
-              value={searchTerm}
-              onChange={onSearchTermChange}
-              placeholder="작품 제목을 검색해보세요."
-            />
-          </SearchForm>
-        </DarkBackground>
+        <SearchForm onSubmit={onSubmit}>
+          <i className="fas fa-search"></i>
+          <SearchInput
+            value={searchTerm}
+            onChange={onSearchTermChange}
+            placeholder="작품 제목을 검색해보세요."
+          />
+        </SearchForm>
       </Column>
+      <HamburgerMenu visible={hamburgerMenu} setVisible={setHamburgerMenu} />
+      <MobileSearchForm
+        visible={searchFormOnMobile}
+        setVisible={setSearchFormOnMobile}
+      />
     </Container>
   );
 }

@@ -46,8 +46,6 @@ function Search() {
     fetchData();
   }, [searchTerm]);
 
-  console.log(data.movies, data.tvShows);
-
   return (
     <>
       <Helmet>
