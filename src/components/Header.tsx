@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import useScroll from "../hooks/useScroll";
 
 const Container = styled.header<{ transparent: boolean }>`
@@ -72,7 +72,36 @@ const Tab = styled(Link)<{ $isCurrent: boolean }>`
   transition: border-bottom 0.2s linear;
 `;
 
-const SearchForm = styled.form`
+const SearchButton = styled.button<{ visible: boolean }>`
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: white;
+  width: 50px;
+  height: 50px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: ${({ visible }) => (visible ? "block" : "none")};
+
+  @media only screen and (min-width: 769px) {
+    display: none;
+  }
+`;
+
+const SearchFormBackground = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+`;
+
+const searchFormAnimation = keyframes`
+  100% {
+    transform: translateY(0);
+  }
+`;
+
+const SearchForm = styled.form<{ visible: boolean }>`
   position: relative;
   width: 400px;
 
@@ -80,6 +109,27 @@ const SearchForm = styled.form`
     position: absolute;
     left: 15px;
     top: 10px;
+  }
+
+  @media only screen and (max-width: 768px) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: ${({ visible }) => (visible ? "block" : "none")};
+    width: 100vw;
+    height: 60px;
+    z-index: 1000;
+    transform: translateY(-60px);
+    animation: ${searchFormAnimation} 0.2s ease-in-out forwards;
+
+    i {
+      font-size: 1.5rem;
+      top: 17px;
+    }
+
+    ${SearchFormBackground} {
+      display: ${({ visible }) => (visible ? "block" : "none")};
+    }
   }
 `;
 
@@ -101,18 +151,44 @@ const SearchInput = styled.input`
   &::placeholder {
     transition: color 0.2s linear;
   }
+
+  @media only screen and (max-width: 768px) {
+    height: 100%;
+    background-color: ${({ theme }) => theme.colors.secondary} !important;
+    box-shadow: none !important;
+    padding-left: 55px;
+    font-size: 1.1rem;
+    border-radius: 30px;
+  }
 `;
 
 function Header() {
   const { pathname } = useLocation();
   const scroll = useScroll();
+  const [searchFormOnMobile, setSearchFormOnMobile] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const history = useHistory();
+
+  useEffect(() => {
+    if (searchFormOnMobile) {
+      searchInputRef.current?.focus();
+    }
+  }, [searchFormOnMobile]);
+
+  const onClickSearchButton = () => {
+    setSearchFormOnMobile(true);
+  };
+
+  const onClickSearchFormBackground = () => {
+    setSearchFormOnMobile(false);
+  };
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     history.push(`/search?term=${searchTerm}`);
     setSearchTerm("");
+    setSearchFormOnMobile(false);
   };
 
   const onSearchTermChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,13 +209,21 @@ function Header() {
         </Tab>
       </Column>
       <Column>
-        <SearchForm onSubmit={onSubmit}>
+        <SearchButton
+          onClick={onClickSearchButton}
+          visible={!searchFormOnMobile}
+        >
+          <i className="fas fa-search"></i>
+        </SearchButton>
+        <SearchForm onSubmit={onSubmit} visible={searchFormOnMobile}>
           <i className="fas fa-search"></i>
           <SearchInput
+            ref={searchInputRef}
             value={searchTerm}
             onChange={onSearchTermChange}
             placeholder="작품 제목을 검색해보세요."
           />
+          <SearchFormBackground onClick={onClickSearchFormBackground} />
         </SearchForm>
       </Column>
     </Container>
