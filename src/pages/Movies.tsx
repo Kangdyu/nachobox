@@ -5,6 +5,7 @@ import Loading from "../components/Loading";
 import TVMovieGridItem from "../components/TVMovieGridItem";
 import ScrollGridCategory from "../components/ScrollGridCategory";
 import { MainContainer } from "../styles";
+import { Helmet } from "react-helmet";
 
 function Movies() {
   const [loading, setLoading] = useState(true);
@@ -36,6 +37,9 @@ function Movies() {
 
   return (
     <>
+      <Helmet>
+        <title>영화 | NachoBox</title>
+      </Helmet>
       {loading && <Loading />}
       {!loading && (
         <MainContainer>

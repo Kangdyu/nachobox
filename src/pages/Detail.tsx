@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
+import { Helmet } from "react-helmet";
 
 import { movieApi, tvApi } from "../api/api";
 import { MovieDetail, TVDetail } from "../api/types";
@@ -173,6 +174,13 @@ function Detail() {
         <MainContainer>
           {data && (
             <>
+              <Helmet>
+                <title>
+                  {isMovieDetail(data)
+                    ? `${data.title} | NachoBox`
+                    : `${data.name} | NachoBox`}
+                </title>
+              </Helmet>
               {data.backdrop_path && (
                 <BackdropImage
                   image={getPosterURL(data.backdrop_path, "original")}

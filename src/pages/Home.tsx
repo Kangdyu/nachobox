@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { movieApi } from "../api/api";
 import { MovieListItem } from "../api/types";
 import Loading from "../components/Loading";
@@ -34,6 +35,9 @@ function Home() {
 
   return (
     <>
+      <Helmet>
+        <title>홈 | NachoBox</title>
+      </Helmet>
       {loading && <Loading />}
       {!loading && recommendedMovie && (
         <RecommendedMovie movie={recommendedMovie} />

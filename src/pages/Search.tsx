@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { movieApi, tvApi } from "../api/api";
 import { MovieListItem, TVListItem } from "../api/types";
@@ -49,6 +50,9 @@ function Search() {
 
   return (
     <>
+      <Helmet>
+        <title>검색 | NachoBox</title>
+      </Helmet>
       {loading && <Loading />}
       {!loading && (
         <MainContainer>

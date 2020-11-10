@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { tvApi } from "../api/api";
 import { TVListItem } from "../api/types";
 import Loading from "../components/Loading";
@@ -36,6 +37,9 @@ function TV() {
 
   return (
     <>
+      <Helmet>
+        <title>TV 프로그램 | NachoBox</title>
+      </Helmet>
       {loading && <Loading />}
       {!loading && (
         <MainContainer>
