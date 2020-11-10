@@ -23,7 +23,7 @@ const ScrollButton = styled.button<{
   background-color: rgba(0, 0, 0, 0.5);
   font-size: 2rem;
   color: white;
-  font-weight: 800;
+  font-weight: 700;
   cursor: pointer;
   z-index: 9;
   opacity: 0;
@@ -89,14 +89,14 @@ function ScrollGrid({
         onClick={onScrollLeft}
         visible={!scroll.isLeftEnd}
       >
-        &lt;
+        <i className="fas fa-chevron-left"></i>
       </ScrollButton>
       <ScrollButton
         direction="right"
         onClick={onScrollRight}
         visible={!scroll.isRightEnd}
       >
-        &gt;
+        <i className="fas fa-chevron-right"></i>
       </ScrollButton>
     </Container>
   );

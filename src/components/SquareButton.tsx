@@ -82,8 +82,8 @@ const Button = styled.button<StyleProps>`
   ${outlineStyle}
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.highlight};
-    color: ${({ theme }) => theme.colors.main};
+    background-color: ${({ theme }) => theme.colors.main};
+    color: ${({ theme }) => theme.colors.white};
   }
 
   transition-property: background-color color;
@@ -118,8 +118,8 @@ function SquareButton({
 }
 
 SquareButton.defaultProps = {
-  bgColor: "main",
-  color: "white",
+  bgColor: "highlight",
+  color: "main",
   size: "medium",
 };
 

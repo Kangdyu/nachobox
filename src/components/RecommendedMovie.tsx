@@ -7,17 +7,22 @@ import BackdropImage from "./BackdropImage";
 import SquareButton from "./SquareButton";
 
 const Container = styled.div`
-  position: relative;
+  display: flex;
+  align-items: center;
   width: 100vw;
   height: 100vh;
 `;
 
 const InfoOverlay = styled.div`
-  position: absolute;
-  left: 5%;
-  top: 30vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 90%;
+  height: 50%;
+  margin-left: 5%;
 `;
+
+const InfoRow = styled.div``;
 
 const Title = styled.h1`
   width: 75%;
@@ -29,15 +34,6 @@ const Title = styled.h1`
 const Description = styled.p`
   width: 50%;
   line-height: 1.5;
-  margin-bottom: 100px;
-`;
-
-const ButtonContainer = styled.div`
-  position: absolute;
-  width: 90%;
-  left: 5%;
-  bottom: 25vh;
-  display: flex;
 `;
 
 const StyledLink = styled(Link)`
@@ -55,16 +51,16 @@ function RecommendedMovie({ movie }: RecommendedMovieProps) {
         <BackdropImage image={getPosterURL(movie.backdrop_path, "original")} />
       )}
       <InfoOverlay>
-        <Title>{movie.title}</Title>
-        <Description>{movie.overview}</Description>
+        <InfoRow>
+          <Title>{movie.title}</Title>
+          <Description>{movie.overview}</Description>
+        </InfoRow>
+        <InfoRow>
+          <StyledLink to={`/movies/${movie.id}`}>
+            <SquareButton size="big">상세보기</SquareButton>
+          </StyledLink>
+        </InfoRow>
       </InfoOverlay>
-      <ButtonContainer>
-        <StyledLink to={`/movies/${movie.id}`}>
-          <SquareButton size="big" bgColor="main">
-            상세보기
-          </SquareButton>
-        </StyledLink>
-      </ButtonContainer>
     </Container>
   );
 }

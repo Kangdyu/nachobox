@@ -16,8 +16,7 @@ const Overlay = styled.div`
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
 
-  padding: 5px 10px;
-  padding-top: 20px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
 `;
