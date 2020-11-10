@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { movieApi, tvApi } from "../api/api";
 import { MovieListItem, TVListItem } from "../api/types";
+import { useGridSettings } from "./GridSettingsProvider";
 import ScrollGridCategory from "./ScrollGridCategory";
 import TVMovieGridItem from "./TVMovieGridItem";
 
@@ -14,6 +15,7 @@ function Recommendations({ id, isMovie }: RecommendationsProps) {
   const [recommendations, setRecommendations] = useState<
     (MovieListItem | TVListItem)[]
   >([]);
+  const { columnWidth, scrollRatio } = useGridSettings();
 
   useEffect(() => {
     async function fetchData() {
@@ -47,9 +49,9 @@ function Recommendations({ id, isMovie }: RecommendationsProps) {
       {recommendations.length !== 0 && (
         <ScrollGridCategory
           title={isMovie ? "추천 영화" : "추천 TV 프로그램"}
-          columnWidth={200}
+          columnWidth={columnWidth}
           gap={15}
-          scrollRatio={2}
+          scrollRatio={scrollRatio}
           listLength={recommendations.length}
         >
           <TVMovieGridItem list={recommendations} />

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
+import { useGridSettings } from "./GridSettingsProvider";
 
 const Container = styled.div`
   display: flex;
@@ -57,14 +58,14 @@ function GridItem({
   children,
 }: GridItemProps) {
   const imageRef = useRef<HTMLImageElement>(null);
+  const { columnWidth } = useGridSettings();
 
   useEffect(() => {
     if (imageRef.current) {
       const { current: elem } = imageRef;
-      elem.style.height =
-        elem.getBoundingClientRect().width * heightRatio + "px";
+      elem.style.height = columnWidth * heightRatio + "px";
     }
-  }, [heightRatio]);
+  }, [heightRatio, columnWidth]);
 
   return (
     <Container>

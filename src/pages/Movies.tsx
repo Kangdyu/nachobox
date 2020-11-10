@@ -6,10 +6,12 @@ import TVMovieGridItem from "../components/TVMovieGridItem";
 import ScrollGridCategory from "../components/ScrollGridCategory";
 import { MainContainer } from "../styles";
 import { Helmet } from "react-helmet";
+import { useGridSettings } from "../components/GridSettingsProvider";
 
 function Movies() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<{ [name: string]: MovieListItem[] }>({});
+  const { columnWidth, scrollRatio } = useGridSettings();
 
   useEffect(() => {
     async function fetchData() {
@@ -46,36 +48,36 @@ function Movies() {
           <>
             <ScrollGridCategory
               title="현재 상영중"
-              columnWidth={200}
+              columnWidth={columnWidth}
               gap={15}
-              scrollRatio={2}
+              scrollRatio={scrollRatio}
               listLength={data.nowPlaying.length}
             >
               <TVMovieGridItem list={data.nowPlaying} />
             </ScrollGridCategory>
             <ScrollGridCategory
               title="개봉 예정"
-              columnWidth={200}
+              columnWidth={columnWidth}
               gap={15}
-              scrollRatio={2}
+              scrollRatio={scrollRatio}
               listLength={data.upcoming.length}
             >
               <TVMovieGridItem list={data.upcoming} />
             </ScrollGridCategory>
             <ScrollGridCategory
               title="인기 영화"
-              columnWidth={200}
+              columnWidth={columnWidth}
               gap={15}
-              scrollRatio={2}
+              scrollRatio={scrollRatio}
               listLength={data.popular.length}
             >
               <TVMovieGridItem list={data.popular} />
             </ScrollGridCategory>
             <ScrollGridCategory
               title="최고 평점 영화"
-              columnWidth={200}
+              columnWidth={columnWidth}
               gap={15}
-              scrollRatio={2}
+              scrollRatio={scrollRatio}
               listLength={data.topRated.length}
             >
               <TVMovieGridItem list={data.topRated} />

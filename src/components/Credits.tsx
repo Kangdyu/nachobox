@@ -3,6 +3,7 @@ import { movieApi, tvApi } from "../api/api";
 import { CreditsInfo } from "../api/types";
 import { getPosterURL } from "../common/imageGetter";
 import GridItem from "./GridItem";
+import { useGridSettings } from "./GridSettingsProvider";
 import ScrollGridCategory from "./ScrollGridCategory";
 
 type CreditsProps = {
@@ -13,6 +14,7 @@ type CreditsProps = {
 function Credits({ id, isMovie }: CreditsProps) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<CreditsInfo>({ id, cast: [], crew: [] });
+  const { columnWidth, scrollRatio } = useGridSettings();
 
   useEffect(() => {
     async function fetchData() {
@@ -46,9 +48,9 @@ function Credits({ id, isMovie }: CreditsProps) {
       {data.cast.length !== 0 && (
         <ScrollGridCategory
           title="배우"
-          columnWidth={200}
+          columnWidth={columnWidth}
           gap={15}
-          scrollRatio={2}
+          scrollRatio={scrollRatio}
           listLength={data.cast.length}
         >
           {data.cast.map((person) => (
@@ -68,9 +70,9 @@ function Credits({ id, isMovie }: CreditsProps) {
       {data.crew.length !== 0 && (
         <ScrollGridCategory
           title="제작진"
-          columnWidth={200}
+          columnWidth={columnWidth}
           gap={15}
-          scrollRatio={2}
+          scrollRatio={scrollRatio}
           listLength={data.crew.length}
         >
           {data.crew.map((person) => (

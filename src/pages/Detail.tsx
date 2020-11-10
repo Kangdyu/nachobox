@@ -18,6 +18,7 @@ import RelatedVideos from "../components/RelatedVideos";
 import ScrollGridCategory from "../components/ScrollGridCategory";
 import { MainContainer } from "../styles";
 import PageNotFound from "../components/PageNotFound";
+import { useGridSettings } from "../components/GridSettingsProvider";
 
 const MainGrid = styled.div`
   display: grid;
@@ -75,7 +76,7 @@ const Title = styled.h1`
 
   @media only screen and (max-width: ${({ theme }) =>
       theme.responsive.pcSmall}) {
-    font-size: 2rem;
+    font-size: 1.8rem;
     text-align: center;
   }
 `;
@@ -145,6 +146,7 @@ function Detail() {
   const { id } = useParams<{ id: string }>();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<MovieDetail | TVDetail>();
+  const { columnWidth, scrollRatio } = useGridSettings();
 
   useEffect(() => {
     async function fetchData() {
@@ -251,9 +253,9 @@ function Detail() {
               {!isMovieDetail(data) && data.seasons.length !== 0 && (
                 <ScrollGridCategory
                   title="시즌 정보"
-                  columnWidth={200}
+                  columnWidth={columnWidth}
                   gap={15}
-                  scrollRatio={2}
+                  scrollRatio={scrollRatio}
                   listLength={data.seasons.length}
                 >
                   {data.seasons.map((season) => (
@@ -275,9 +277,9 @@ function Detail() {
               {data.production_companies.length !== 0 && (
                 <ScrollGridCategory
                   title="제작사"
-                  columnWidth={200}
+                  columnWidth={columnWidth}
                   gap={15}
-                  scrollRatio={2}
+                  scrollRatio={scrollRatio}
                   listLength={data.production_companies.length}
                 >
                   {data.production_companies.map((company) => (

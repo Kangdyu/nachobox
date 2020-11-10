@@ -12,6 +12,11 @@ const Title = styled.h1`
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 20px;
+
+  @media only screen and (max-width: ${({ theme }) =>
+      theme.responsive.mobile}) {
+    font-size: 1.3rem;
+  }
 `;
 
 type ScrollGridCategoryProps = {
