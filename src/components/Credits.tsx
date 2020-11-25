@@ -3,8 +3,7 @@ import { movieApi, tvApi } from "../api/api";
 import { CreditsInfo } from "../api/types";
 import { getPosterURL } from "../common/imageGetter";
 import GridItem from "./GridItem";
-import { useGridSettings } from "./GridSettingsProvider";
-import ScrollGridCategory from "./ScrollGridCategory";
+import ScrollGrid from "./ScrollGrid";
 
 type CreditsProps = {
   id: number;
@@ -14,7 +13,6 @@ type CreditsProps = {
 function Credits({ id, isMovie }: CreditsProps) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<CreditsInfo>({ id, cast: [], crew: [] });
-  const { columnWidth, scrollRatio } = useGridSettings();
 
   useEffect(() => {
     async function fetchData() {
@@ -46,13 +44,7 @@ function Credits({ id, isMovie }: CreditsProps) {
   return (
     <>
       {data.cast.length !== 0 && (
-        <ScrollGridCategory
-          title="배우"
-          columnWidth={columnWidth}
-          gap={15}
-          scrollRatio={scrollRatio}
-          listLength={data.cast.length}
-        >
+        <ScrollGrid title="배우" listLength={data.cast.length}>
           {data.cast.map((person) => (
             <GridItem
               key={person.credit_id}
@@ -65,16 +57,10 @@ function Credits({ id, isMovie }: CreditsProps) {
               }
             />
           ))}
-        </ScrollGridCategory>
+        </ScrollGrid>
       )}
       {data.crew.length !== 0 && (
-        <ScrollGridCategory
-          title="제작진"
-          columnWidth={columnWidth}
-          gap={15}
-          scrollRatio={scrollRatio}
-          listLength={data.crew.length}
-        >
+        <ScrollGrid title="제작진" listLength={data.crew.length}>
           {data.crew.map((person) => (
             <GridItem
               key={person.credit_id}
@@ -87,7 +73,7 @@ function Credits({ id, isMovie }: CreditsProps) {
               }
             />
           ))}
-        </ScrollGridCategory>
+        </ScrollGrid>
       )}
     </>
   );

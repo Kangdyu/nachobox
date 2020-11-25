@@ -3,9 +3,8 @@ import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { movieApi, tvApi } from "../api/api";
 import { MovieListItem, TVListItem } from "../api/types";
-import { useGridSettings } from "../components/GridSettingsProvider";
 import Loading from "../components/Loading";
-import ScrollGridCategory from "../components/ScrollGridCategory";
+import ScrollGrid from "../components/ScrollGrid";
 import TVMovieGridItem from "../components/TVMovieGridItem";
 import useQuery from "../hooks/useQuery";
 import { MainContainer } from "../styles";
@@ -27,7 +26,6 @@ function Search() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<SearchResult>({ movies: [], tvShows: [] });
   const searchTerm = useQuery("term");
-  const { columnWidth, scrollRatio } = useGridSettings();
 
   useEffect(() => {
     async function fetchData() {
@@ -58,26 +56,14 @@ function Search() {
         <MainContainer>
           <Title>"{searchTerm}" 검색 결과</Title>
           {data.movies.length !== 0 && (
-            <ScrollGridCategory
-              title="영화"
-              columnWidth={columnWidth}
-              gap={15}
-              listLength={data.movies.length}
-              scrollRatio={scrollRatio}
-            >
+            <ScrollGrid title="영화" listLength={data.movies.length}>
               <TVMovieGridItem list={data.movies} />
-            </ScrollGridCategory>
+            </ScrollGrid>
           )}
           {data.tvShows.length !== 0 && (
-            <ScrollGridCategory
-              title="TV 프로그램"
-              columnWidth={columnWidth}
-              gap={15}
-              listLength={data.tvShows.length}
-              scrollRatio={scrollRatio}
-            >
+            <ScrollGrid title="TV 프로그램" listLength={data.tvShows.length}>
               <TVMovieGridItem list={data.tvShows} />
-            </ScrollGridCategory>
+            </ScrollGrid>
           )}
           {data.movies.length === 0 &&
             data.tvShows.length === 0 &&

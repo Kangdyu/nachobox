@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 
 export type GridSettings = {
   columnWidth: number;
+  gap: number;
   scrollRatio: number;
 };
 
@@ -12,10 +13,12 @@ type GridSettingsBlueprint = {
 const gridSetting: GridSettingsBlueprint = {
   pc: {
     columnWidth: 200,
+    gap: 15,
     scrollRatio: 2,
   },
   mobile: {
     columnWidth: 120,
+    gap: 15,
     scrollRatio: 1,
   },
 };

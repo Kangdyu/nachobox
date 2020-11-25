@@ -4,8 +4,7 @@ import { movieApi, tvApi } from "../api/api";
 import { Video } from "../api/types";
 import { getYoutubeThumbnailURL } from "../common/imageGetter";
 import GridItem from "./GridItem";
-import { useGridSettings } from "./GridSettingsProvider";
-import ScrollGridCategory from "./ScrollGridCategory";
+import ScrollGrid from "./ScrollGrid";
 
 const YTLink = styled.a`
   text-decoration: none;
@@ -20,7 +19,6 @@ type RelatedVideosProps = {
 function RelatedVideos({ id, isMovie }: RelatedVideosProps) {
   const [loading, setLoading] = useState(true);
   const [videos, setVideos] = useState<Video[]>([]);
-  const { columnWidth, scrollRatio } = useGridSettings();
 
   useEffect(() => {
     async function fetchData() {
@@ -52,13 +50,7 @@ function RelatedVideos({ id, isMovie }: RelatedVideosProps) {
   return (
     <>
       {videos.length !== 0 && (
-        <ScrollGridCategory
-          title="관련 영상"
-          columnWidth={columnWidth}
-          gap={15}
-          scrollRatio={scrollRatio}
-          listLength={videos.length}
-        >
+        <ScrollGrid title="관련 영상" listLength={videos.length}>
           {videos.map(
             (video) =>
               video.site === "YouTube" && (
@@ -76,7 +68,7 @@ function RelatedVideos({ id, isMovie }: RelatedVideosProps) {
                 </YTLink>
               )
           )}
-        </ScrollGridCategory>
+        </ScrollGrid>
       )}
     </>
   );

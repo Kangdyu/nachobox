@@ -15,10 +15,9 @@ import GridItem from "../components/GridItem";
 import Loading from "../components/Loading";
 import Recommendations from "../components/Recommendations";
 import RelatedVideos from "../components/RelatedVideos";
-import ScrollGridCategory from "../components/ScrollGridCategory";
 import { MainContainer } from "../styles";
 import PageNotFound from "../components/PageNotFound";
-import { useGridSettings } from "../components/GridSettingsProvider";
+import ScrollGrid from "../components/ScrollGrid";
 
 const MainGrid = styled.div`
   display: grid;
@@ -146,7 +145,6 @@ function Detail() {
   const { id } = useParams<{ id: string }>();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<MovieDetail | TVDetail>();
-  const { columnWidth, scrollRatio } = useGridSettings();
 
   useEffect(() => {
     async function fetchData() {
@@ -251,13 +249,7 @@ function Detail() {
               </MainGrid>
 
               {!isMovieDetail(data) && data.seasons.length !== 0 && (
-                <ScrollGridCategory
-                  title="시즌 정보"
-                  columnWidth={columnWidth}
-                  gap={15}
-                  scrollRatio={scrollRatio}
-                  listLength={data.seasons.length}
-                >
+                <ScrollGrid title="시즌 정보" listLength={data.seasons.length}>
                   {data.seasons.map((season) => (
                     <GridItem
                       key={season.id}
@@ -270,16 +262,13 @@ function Detail() {
                       }
                     />
                   ))}
-                </ScrollGridCategory>
+                </ScrollGrid>
               )}
               <RelatedVideos id={data.id} isMovie={isMovie} />
               <Credits id={data.id} isMovie={isMovie} />
               {data.production_companies.length !== 0 && (
-                <ScrollGridCategory
+                <ScrollGrid
                   title="제작사"
-                  columnWidth={columnWidth}
-                  gap={15}
-                  scrollRatio={scrollRatio}
                   listLength={data.production_companies.length}
                 >
                   {data.production_companies.map((company) => (
@@ -295,7 +284,7 @@ function Detail() {
                       heightRatio={0.4}
                     />
                   ))}
-                </ScrollGridCategory>
+                </ScrollGrid>
               )}
               <Recommendations id={data.id} isMovie={isMovie} />
             </MainContainer>
