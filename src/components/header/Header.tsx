@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import styled, { css } from "styled-components";
-import useScroll from "../hooks/useScroll";
-import HamburgerMenu from "./HamburgerMenu";
-import MobileSearchForm from "./MobileSearchForm";
+
+import useScroll from "hooks/useScroll";
+
+import HamburgerMenu from "components/header/HamburgerMenu";
+import MobileSearchForm from "components/header/MobileSearchForm";
 
 const Container = styled.header<{ transparent: boolean }>`
   position: fixed;
@@ -178,7 +180,7 @@ function Header() {
           <i className="fas fa-bars"></i>
         </HamburgerButton>
         <Icon to="/">
-          <img src={require("../assets/nacho-icon.png")} alt="icon" />
+          <img src={require("assets/nacho-icon.png")} alt="icon" />
         </Icon>
         <Tab to="/movies" $isCurrent={pathname.split("/")[1] === "movies"}>
           영화

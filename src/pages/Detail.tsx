@@ -3,21 +3,24 @@ import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Helmet } from "react-helmet";
 
-import { movieApi, tvApi } from "../api/api";
-import { MovieDetail, TVDetail } from "../api/types";
+import { movieApi, tvApi } from "api/api";
+import { MovieDetail, TVDetail } from "api/types";
 
-import { getPosterURL } from "../common/imageGetter";
-import { isMovieDetail } from "../common/typeGuards";
+import { getPosterURL } from "utils/imageGetter";
+import { isMovieDetail } from "utils/typeGuards";
 
-import BackdropImage from "../components/BackdropImage";
-import Credits from "../components/Credits";
-import GridItem from "../components/GridItem";
-import Loading from "../components/Loading";
-import Recommendations from "../components/Recommendations";
-import RelatedVideos from "../components/RelatedVideos";
-import { MainContainer } from "../styles";
-import PageNotFound from "../components/PageNotFound";
-import ScrollGrid from "../components/ScrollGrid";
+import BackdropImage from "components/common/BackdropImage";
+import GridItem from "components/common/GridItem";
+import Loading from "components/common/Loading";
+import ScrollGrid from "components/common/ScrollGrid";
+
+import Credits from "components/detail/Credits";
+import Recommendations from "components/detail/Recommendations";
+import RelatedVideos from "components/detail/RelatedVideos";
+
+import PageNotFound from "pages/PageNotFound";
+
+import { MainContainer } from "styles";
 
 const MainGrid = styled.div`
   display: grid;
@@ -193,7 +196,7 @@ function Detail() {
                   src={
                     data.poster_path
                       ? getPosterURL(data.poster_path, "w500")
-                      : require("../assets/no-image.png")
+                      : require("assets/no-image.png")
                   }
                 />
                 <InfoContainer>
@@ -258,7 +261,7 @@ function Detail() {
                       image={
                         season.poster_path
                           ? getPosterURL(season.poster_path, "w500")
-                          : require("../assets/no-image.png")
+                          : require("assets/no-image.png")
                       }
                     />
                   ))}
@@ -279,7 +282,7 @@ function Detail() {
                       image={
                         company.logo_path
                           ? getPosterURL(company.logo_path, "w500")
-                          : require("../assets/no-image.png")
+                          : require("assets/no-image.png")
                       }
                       heightRatio={0.4}
                     />

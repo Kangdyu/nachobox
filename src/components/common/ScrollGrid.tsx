@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import useScrollGrid from "../hooks/useScrollGrid";
-import { useGridSettings } from "./GridSettingsProvider";
+import useScrollGrid from "hooks/useScrollGrid";
+import { useGridSettings } from "components/common/GridSettingsProvider";
 
 const ScrollButton = styled.button<{
   direction: "left" | "right";

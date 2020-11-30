@@ -1,7 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { MovieListItem, TVListItem } from "../api/types";
-import { isMovieListItem } from "../common/typeGuards";
+
+import { MovieListItem, TVListItem } from "api/types";
+
+import { isMovieListItem } from "utils/typeGuards";
 
 const Overlay = styled.div`
   position: absolute;

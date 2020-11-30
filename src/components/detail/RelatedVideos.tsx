@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { movieApi, tvApi } from "../api/api";
-import { Video } from "../api/types";
-import { getYoutubeThumbnailURL } from "../common/imageGetter";
-import GridItem from "./GridItem";
-import ScrollGrid from "./ScrollGrid";
+
+import { movieApi, tvApi } from "api/api";
+import { Video } from "api/types";
+
+import { getYoutubeThumbnailURL } from "utils/imageGetter";
+
+import GridItem from "components/common/GridItem";
+import ScrollGrid from "components/common/ScrollGrid";
 
 const YTLink = styled.a`
   text-decoration: none;

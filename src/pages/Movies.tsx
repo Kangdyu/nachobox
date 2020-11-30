@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { movieApi } from "../api/api";
-import { MovieListItem } from "../api/types";
-import Loading from "../components/Loading";
-import TVMovieGridItem from "../components/TVMovieGridItem";
-import { MainContainer } from "../styles";
 import { Helmet } from "react-helmet";
-import ScrollGrid from "../components/ScrollGrid";
+
+import { movieApi } from "api/api";
+import { MovieListItem } from "api/types";
+
+import Loading from "components/common/Loading";
+import TVMovieGridItem from "components/common/TVMovieGridItem";
+import ScrollGrid from "components/common/ScrollGrid";
+
+import { MainContainer } from "styles";
 
 function Movies() {
   const [loading, setLoading] = useState(true);

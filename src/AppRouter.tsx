@@ -1,13 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import PageNotFound from "./components/PageNotFound";
-import Detail from "./pages/Detail";
-import Home from "./pages/Home";
-import Movies from "./pages/Movies";
-import Search from "./pages/Search";
-import TV from "./pages/TV";
+import Footer from "components/common/Footer";
+import Header from "components/header/Header";
+import PageNotFound from "pages/PageNotFound";
+import Detail from "pages/Detail";
+import Home from "pages/Home";
+import Movies from "pages/Movies";
+import Search from "pages/Search";
+import TV from "pages/TV";
 
 function AppRouter() {
   return (

@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import styled from "styled-components";
-import { movieApi, tvApi } from "../api/api";
-import { MovieListItem, TVListItem } from "../api/types";
-import Loading from "../components/Loading";
-import ScrollGrid from "../components/ScrollGrid";
-import TVMovieGridItem from "../components/TVMovieGridItem";
-import useQuery from "../hooks/useQuery";
-import { MainContainer } from "../styles";
+
+import { movieApi, tvApi } from "api/api";
+import { MovieListItem, TVListItem } from "api/types";
+
+import Loading from "components/common/Loading";
+import ScrollGrid from "components/common/ScrollGrid";
+import TVMovieGridItem from "components/common/TVMovieGridItem";
+
+import useQuery from "hooks/useQuery";
+
+import { MainContainer } from "styles";
 
 const Title = styled.h1`
   font-size: 1.5rem;

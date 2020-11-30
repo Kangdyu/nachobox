@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { movieApi } from "../api/api";
-import { MovieListItem } from "../api/types";
-import Loading from "../components/Loading";
-import RecommendedMovie from "../components/RecommendedMovie";
+
+import { movieApi } from "api/api";
+import { MovieListItem } from "api/types";
+
+import Loading from "components/common/Loading";
+import RecommendedMovie from "components/home/RecommendedMovie";
 
 function getRecommendedMovie(movieList: MovieListItem[]) {
   const filtered = movieList.filter((movie) => movie.backdrop_path);

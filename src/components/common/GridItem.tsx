@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
-import { useGridSettings } from "./GridSettingsProvider";
+import { useGridSettings } from "components/common/GridSettingsProvider";
 
 const Container = styled.div`
   display: flex;

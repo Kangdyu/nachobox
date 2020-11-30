@@ -1,11 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { MovieListItem, TVListItem } from "../api/types";
-import { getPosterURL } from "../common/imageGetter";
-import { isMovieListItem } from "../common/typeGuards";
-import GridItem from "./GridItem";
-import TVMovieOverlay from "./TVMovieOverlay";
+
+import { MovieListItem, TVListItem } from "api/types";
+
+import { getPosterURL } from "utils/imageGetter";
+import { isMovieListItem } from "utils/typeGuards";
+
+import GridItem from "components/common/GridItem";
+import TVMovieOverlay from "components/common/TVMovieOverlay";
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -28,7 +31,7 @@ function TVMovieGridItem({ list }: TVMovieGridItemProps) {
             image={
               item.poster_path
                 ? getPosterURL(item.poster_path, "w500")
-                : require("../assets/no-image.png")
+                : require("assets/no-image.png")
             }
             title={isMovieListItem(item) ? item.title : item.name}
             subtitle={

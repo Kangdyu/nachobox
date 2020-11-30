@@ -1,10 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { MovieListItem } from "../api/types";
-import { getPosterURL } from "../common/imageGetter";
-import BackdropImage from "./BackdropImage";
-import SquareButton from "./SquareButton";
+
+import { MovieListItem } from "api/types";
+
+import { getPosterURL } from "utils/imageGetter";
+
+import BackdropImage from "components/common/BackdropImage";
+import SquareButton from "components/common/SquareButton";
 
 const Container = styled.div`
   display: flex;

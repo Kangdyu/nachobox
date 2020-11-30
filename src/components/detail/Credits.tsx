@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { movieApi, tvApi } from "../api/api";
-import { CreditsInfo } from "../api/types";
-import { getPosterURL } from "../common/imageGetter";
-import GridItem from "./GridItem";
-import ScrollGrid from "./ScrollGrid";
+
+import { movieApi, tvApi } from "api/api";
+import { CreditsInfo } from "api/types";
+
+import { getPosterURL } from "utils/imageGetter";
+import GridItem from "components/common/GridItem";
+import ScrollGrid from "components/common/ScrollGrid";
 
 type CreditsProps = {
   id: number;
@@ -53,7 +55,7 @@ function Credits({ id, isMovie }: CreditsProps) {
               image={
                 person.profile_path
                   ? getPosterURL(person.profile_path, "w500")
-                  : require("../assets/no-image.png")
+                  : require("assets/no-image.png")
               }
             />
           ))}
@@ -69,7 +71,7 @@ function Credits({ id, isMovie }: CreditsProps) {
               image={
                 person.profile_path
                   ? getPosterURL(person.profile_path, "w500")
-                  : require("../assets/no-image.png")
+                  : require("assets/no-image.png")
               }
             />
           ))}
