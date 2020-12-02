@@ -1,42 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
-
-import { movieApi } from "api/api";
-import { MovieListItem } from "api/types";
+import { useSelector } from "react-redux";
 
 import Loading from "components/common/Loading";
 import TVMovieGridItem from "components/common/TVMovieGridItem";
 import ScrollGrid from "components/common/ScrollGrid";
 
+import { RootState } from "modules";
+
 import { MainContainer } from "styles";
+import { fetchMovieCategories } from "modules/movies";
+import useAppDispatch from "hooks/useAppDispatch";
 
 function Movies() {
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<{ [name: string]: MovieListItem[] }>({});
+  const {
+    nowPlaying,
+    popular,
+    topRated,
+    upcoming,
+    loading,
+    error,
+  } = useSelector((state: RootState) => state.movies.categories);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const { data: nowPlaying } = await movieApi.nowPlaying();
-        const { data: upcoming } = await movieApi.upcoming();
-        const { data: popular } = await movieApi.popular();
-        const { data: topRated } = await movieApi.topRated();
-
-        setData({
-          nowPlaying: nowPlaying.results,
-          upcoming: upcoming.results,
-          popular: popular.results,
-          topRated: topRated.results,
-        });
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchData();
-  }, []);
+    dispatch(fetchMovieCategories());
+  }, [dispatch]);
 
   return (
     <>
@@ -47,20 +36,17 @@ function Movies() {
       {!loading && (
         <MainContainer>
           <>
-            <ScrollGrid title="현재 상영중" listLength={data.nowPlaying.length}>
-              <TVMovieGridItem list={data.nowPlaying} />
+            <ScrollGrid title="현재 상영중" listLength={nowPlaying.length}>
+              <TVMovieGridItem list={nowPlaying} />
             </ScrollGrid>
-            <ScrollGrid title="개봉 예정" listLength={data.upcoming.length}>
-              <TVMovieGridItem list={data.upcoming} />
+            <ScrollGrid title="개봉 예정" listLength={upcoming.length}>
+              <TVMovieGridItem list={upcoming} />
             </ScrollGrid>
-            <ScrollGrid title="인기 영화" listLength={data.popular.length}>
-              <TVMovieGridItem list={data.popular} />
+            <ScrollGrid title="인기 영화" listLength={popular.length}>
+              <TVMovieGridItem list={popular} />
             </ScrollGrid>
-            <ScrollGrid
-              title="최고 평점 영화"
-              listLength={data.topRated.length}
-            >
-              <TVMovieGridItem list={data.topRated} />
+            <ScrollGrid title="최고 평점 영화" listLength={topRated.length}>
+              <TVMovieGridItem list={topRated} />
             </ScrollGrid>
           </>
         </MainContainer>
