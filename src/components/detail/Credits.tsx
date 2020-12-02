@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-import { movieApi, tvApi } from "api/api";
 import { CreditsInfo } from "api/types";
 
 import { getPosterURL } from "utils/imageGetter";
@@ -8,46 +7,15 @@ import GridItem from "components/common/GridItem";
 import ScrollGrid from "components/common/ScrollGrid";
 
 type CreditsProps = {
-  id: number;
-  isMovie: boolean;
+  credits: CreditsInfo;
 };
 
-function Credits({ id, isMovie }: CreditsProps) {
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<CreditsInfo>({ id, cast: [], crew: [] });
-
-  useEffect(() => {
-    async function fetchData() {
-      let apiFunc;
-      if (isMovie) {
-        apiFunc = movieApi.credits;
-      } else {
-        apiFunc = tvApi.credits;
-      }
-
-      try {
-        const { data: credits } = await apiFunc(id);
-
-        setData(credits);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchData();
-  }, [id, isMovie]);
-
-  if (loading) {
-    return null;
-  }
-
+function Credits({ credits }: CreditsProps) {
   return (
     <>
-      {data.cast.length !== 0 && (
-        <ScrollGrid title="배우" listLength={data.cast.length}>
-          {data.cast.map((person) => (
+      {credits.cast.length !== 0 && (
+        <ScrollGrid title="배우" listLength={credits.cast.length}>
+          {credits.cast.map((person) => (
             <GridItem
               key={person.credit_id}
               title={person.name}
@@ -61,9 +29,9 @@ function Credits({ id, isMovie }: CreditsProps) {
           ))}
         </ScrollGrid>
       )}
-      {data.crew.length !== 0 && (
-        <ScrollGrid title="제작진" listLength={data.crew.length}>
-          {data.crew.map((person) => (
+      {credits.crew.length !== 0 && (
+        <ScrollGrid title="제작진" listLength={credits.crew.length}>
+          {credits.crew.map((person) => (
             <GridItem
               key={person.credit_id}
               title={person.name}

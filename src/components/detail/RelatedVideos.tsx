@@ -15,41 +15,10 @@ const YTLink = styled.a`
 `;
 
 type RelatedVideosProps = {
-  id: number;
-  isMovie: boolean;
+  videos: Video[];
 };
 
-function RelatedVideos({ id, isMovie }: RelatedVideosProps) {
-  const [loading, setLoading] = useState(true);
-  const [videos, setVideos] = useState<Video[]>([]);
-
-  useEffect(() => {
-    async function fetchData() {
-      setLoading(true);
-      try {
-        if (isMovie) {
-          const { data } = await movieApi.videos(id);
-
-          setVideos(data.results);
-        } else {
-          const { data } = await tvApi.videos(id);
-
-          setVideos(data.results);
-        }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchData();
-  }, [id, isMovie]);
-
-  if (loading) {
-    return null;
-  }
-
+function RelatedVideos({ videos }: RelatedVideosProps) {
   return (
     <>
       {videos.length !== 0 && (

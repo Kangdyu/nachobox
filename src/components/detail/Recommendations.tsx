@@ -7,43 +7,11 @@ import ScrollGrid from "components/common/ScrollGrid";
 import TVMovieGridItem from "components/common/TVMovieGridItem";
 
 type RecommendationsProps = {
-  id: number;
+  recommendations: (MovieListItem | TVListItem)[];
   isMovie: boolean;
 };
 
-function Recommendations({ id, isMovie }: RecommendationsProps) {
-  const [loading, setLoading] = useState(true);
-  const [recommendations, setRecommendations] = useState<
-    (MovieListItem | TVListItem)[]
-  >([]);
-
-  useEffect(() => {
-    async function fetchData() {
-      let apiFunc;
-      if (isMovie) {
-        apiFunc = movieApi.recommendations;
-      } else {
-        apiFunc = tvApi.recommendations;
-      }
-
-      try {
-        const { data } = await apiFunc(id);
-
-        setRecommendations(data.results);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchData();
-  }, [id, isMovie]);
-
-  if (loading) {
-    return null;
-  }
-
+function Recommendations({ recommendations, isMovie }: RecommendationsProps) {
   return (
     <>
       {recommendations.length !== 0 && (

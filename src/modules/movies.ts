@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { movieApi } from "api/api";
-import { CreditsInfo, MovieDetail, MovieListItem, VideoInfo } from "api/types";
+import { CreditsInfo, MovieDetail, MovieListItem, Video } from "api/types";
 import { RootState } from "modules";
 
 type MoviesState = {
@@ -14,9 +14,9 @@ type MoviesState = {
   };
   details: {
     [id: number]: {
-      detail: MovieDetail;
-      videos: VideoInfo;
-      credits: CreditsInfo;
+      detail: MovieDetail | null;
+      videos: Video[];
+      credits: CreditsInfo | null;
       recommendations: MovieListItem[];
       loading: boolean;
       error: null | string;
@@ -89,7 +89,7 @@ export const fetchMovieCategories = createAsyncThunk<
 export const fetchMovieDetail = createAsyncThunk<
   {
     detail: MovieDetail;
-    videos: VideoInfo;
+    videos: Video[];
     credits: CreditsInfo;
     recommendations: MovieListItem[];
   },
@@ -105,7 +105,7 @@ export const fetchMovieDetail = createAsyncThunk<
 
     return {
       detail: detail.data,
-      videos: videos.data,
+      videos: videos.data.results,
       credits: credits.data,
       recommendations: recommendations.data.results,
     };
@@ -171,7 +171,14 @@ const moviesSlice = createSlice({
     });
 
     builder.addCase(fetchMovieDetail.pending, (state, action) => {
-      state.details[action.meta.arg].loading = true;
+      state.details[action.meta.arg] = {
+        detail: null,
+        credits: null,
+        recommendations: [],
+        videos: [],
+        loading: true,
+        error: null,
+      };
     });
     builder.addCase(fetchMovieDetail.fulfilled, (state, action) => {
       const { detail, videos, credits, recommendations } = action.payload;
