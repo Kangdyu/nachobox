@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { movieApi } from "api/api";
 import { CreditsInfo, MovieDetail, MovieListItem, VideoInfo } from "api/types";
-import { AxiosError } from "axios";
 import { RootState } from "modules";
 
 type MoviesState = {
@@ -46,30 +45,27 @@ const initialState: MoviesState = {
 };
 
 export const fetchMovieCategories = createAsyncThunk<
-  any,
+  {
+    nowPlaying: MovieListItem[];
+    popular: MovieListItem[];
+    topRated: MovieListItem[];
+    upcoming: MovieListItem[];
+  },
   undefined,
   { state: RootState }
 >(
   "movies/fetchMovieCategories",
-  async (_, { rejectWithValue }) => {
-    try {
-      const nowPlaying = await movieApi.nowPlaying();
-      const popular = await movieApi.popular();
-      const topRated = await movieApi.topRated();
-      const upcoming = await movieApi.upcoming();
-      return {
-        nowPlaying: nowPlaying.data.results,
-        popular: popular.data.results,
-        topRated: topRated.data.results,
-        upcoming: upcoming.data.results,
-      };
-    } catch (error) {
-      let err: AxiosError = error;
-      if (!err.response) {
-        throw error;
-      }
-      return rejectWithValue(err.response.data);
-    }
+  async () => {
+    const nowPlaying = await movieApi.nowPlaying();
+    const popular = await movieApi.popular();
+    const topRated = await movieApi.topRated();
+    const upcoming = await movieApi.upcoming();
+    return {
+      nowPlaying: nowPlaying.data.results,
+      popular: popular.data.results,
+      topRated: topRated.data.results,
+      upcoming: upcoming.data.results,
+    };
   },
   {
     condition: (_, { getState }) => {
@@ -90,35 +86,63 @@ export const fetchMovieCategories = createAsyncThunk<
   }
 );
 
-export const fetchMovieDetail = createAsyncThunk(
+export const fetchMovieDetail = createAsyncThunk<
+  {
+    detail: MovieDetail;
+    videos: VideoInfo;
+    credits: CreditsInfo;
+    recommendations: MovieListItem[];
+  },
+  number,
+  { state: RootState }
+>(
   "movies/fetchMovieDetail",
-  async (movieId: number, { rejectWithValue }) => {
-    try {
-      const response = await movieApi.detail(movieId);
-      return response.data;
-    } catch (error) {
-      let err: AxiosError = error;
-      if (!err.response) {
-        throw error;
+  async (movieId) => {
+    const detail = await movieApi.detail(movieId);
+    const videos = await movieApi.videos(movieId);
+    const credits = await movieApi.credits(movieId);
+    const recommendations = await movieApi.recommendations(movieId);
+
+    return {
+      detail: detail.data,
+      videos: videos.data,
+      credits: credits.data,
+      recommendations: recommendations.data.results,
+    };
+  },
+  {
+    condition: (movieId, { getState }) => {
+      const {
+        movies: { details },
+      } = getState();
+
+      if (details[movieId]) {
+        return false;
       }
-      return rejectWithValue(err.response.data);
-    }
+    },
   }
 );
 
-export const fetchMovieSearchResults = createAsyncThunk(
+export const fetchMovieSearchResults = createAsyncThunk<
+  MovieListItem[],
+  string,
+  { state: RootState }
+>(
   "movies/fetchMovieSearchResults",
-  async (query: string, { rejectWithValue }) => {
-    try {
-      const response = await movieApi.search(query);
-      return response.data;
-    } catch (error) {
-      let err: AxiosError = error;
-      if (!err.response) {
-        throw error;
+  async (query) => {
+    const response = await movieApi.search(query);
+    return response.data.results;
+  },
+  {
+    condition: (query, { getState }) => {
+      const {
+        movies: { searches },
+      } = getState();
+
+      if (searches[query]) {
+        return false;
       }
-      return rejectWithValue(err.response.data);
-    }
+    },
   }
 );
 
@@ -128,31 +152,53 @@ const moviesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchMovieCategories.pending, (state, action) => {
-      if (state.categories.loading === false) {
-        state.categories.loading = true;
-      }
+      state.categories.loading = true;
     });
     builder.addCase(fetchMovieCategories.fulfilled, (state, action) => {
-      if (state.categories.loading === true) {
-        const { nowPlaying, popular, topRated, upcoming } = action.payload;
-        state.categories = {
-          nowPlaying,
-          popular,
-          topRated,
-          upcoming,
-          loading: false,
-          error: null,
-        };
-      }
+      const { nowPlaying, popular, topRated, upcoming } = action.payload;
+      state.categories = {
+        nowPlaying,
+        popular,
+        topRated,
+        upcoming,
+        loading: false,
+        error: null,
+      };
     });
     builder.addCase(fetchMovieCategories.rejected, (state, action) => {
-      if (state.categories.loading === true) {
-        state.categories = {
-          ...state.categories,
-          loading: true,
-          error: String(action.payload),
-        };
-      }
+      state.categories.error = action.error.message as string;
+      state.categories.loading = false;
+    });
+
+    builder.addCase(fetchMovieDetail.pending, (state, action) => {
+      state.details[action.meta.arg].loading = true;
+    });
+    builder.addCase(fetchMovieDetail.fulfilled, (state, action) => {
+      const { detail, videos, credits, recommendations } = action.payload;
+      state.details[action.meta.arg] = {
+        detail,
+        videos,
+        credits,
+        recommendations,
+        loading: false,
+        error: null,
+      };
+    });
+    builder.addCase(fetchMovieDetail.rejected, (state, action) => {
+      state.details[action.meta.arg].error = action.error.message as string;
+      state.details[action.meta.arg].loading = false;
+    });
+
+    builder.addCase(fetchMovieSearchResults.pending, (state, action) => {
+      state.searches[action.meta.arg].loading = true;
+    });
+    builder.addCase(fetchMovieSearchResults.fulfilled, (state, action) => {
+      state.searches[action.meta.arg].results = action.payload;
+      state.searches[action.meta.arg].loading = false;
+    });
+    builder.addCase(fetchMovieSearchResults.rejected, (state, action) => {
+      state.searches[action.meta.arg].error = action.error.message as string;
+      state.searches[action.meta.arg].loading = false;
     });
   },
 });
