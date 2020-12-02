@@ -1,8 +1,12 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import moviesReducer from "./movies";
+import tvShowsReducer from "./tvShows";
+import searchReducer from "./search";
 
 const rootReducer = combineReducers({
   movies: moviesReducer,
+  tvShows: tvShowsReducer,
+  search: searchReducer,
 });
 
 const store = configureStore({

@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-import { movieApi, tvApi } from "api/api";
 import { MovieListItem, TVListItem } from "api/types";
 
 import ScrollGrid from "components/common/ScrollGrid";

@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
 import styled from "styled-components";
-
-import { movieApi, tvApi } from "api/api";
-import { MovieListItem, TVListItem } from "api/types";
 
 import Loading from "components/common/Loading";
 import ScrollGrid from "components/common/ScrollGrid";
@@ -12,6 +9,10 @@ import TVMovieGridItem from "components/common/TVMovieGridItem";
 import useQuery from "hooks/useQuery";
 
 import { MainContainer } from "styles";
+import { useSelector } from "react-redux";
+import { RootState } from "modules";
+import useAppDispatch from "hooks/useAppDispatch";
+import { fetchSearchResults } from "modules/search";
 
 const Title = styled.h1`
   font-size: 1.5rem;
@@ -21,34 +22,21 @@ const Title = styled.h1`
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray};
 `;
 
-type SearchResult = {
-  movies: MovieListItem[];
-  tvShows: TVListItem[];
-};
-
 function Search() {
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<SearchResult>({ movies: [], tvShows: [] });
-  const searchTerm = useQuery("term");
+  const searchTerm = useQuery("term") as string;
+  const { movies, tvShows, loading, error } = useSelector(
+    (state: RootState) => state.search[searchTerm]
+  ) || {
+    movies: [],
+    tvs: [],
+    loading: true,
+    error: null,
+  };
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    async function fetchData() {
-      if (!searchTerm) return;
-
-      setLoading(true);
-      try {
-        const { data: movies } = await movieApi.search(searchTerm);
-        const { data: tvShows } = await tvApi.search(searchTerm);
-
-        setData({ movies: movies.results, tvShows: tvShows.results });
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchData();
-  }, [searchTerm]);
+    dispatch(fetchSearchResults(searchTerm));
+  }, [dispatch, searchTerm]);
 
   return (
     <>
@@ -59,18 +47,18 @@ function Search() {
       {!loading && (
         <MainContainer>
           <Title>"{searchTerm}" 검색 결과</Title>
-          {data.movies.length !== 0 && (
-            <ScrollGrid title="영화" listLength={data.movies.length}>
-              <TVMovieGridItem list={data.movies} />
+          {movies.length !== 0 && (
+            <ScrollGrid title="영화" listLength={movies.length}>
+              <TVMovieGridItem list={movies} />
             </ScrollGrid>
           )}
-          {data.tvShows.length !== 0 && (
-            <ScrollGrid title="TV 프로그램" listLength={data.tvShows.length}>
-              <TVMovieGridItem list={data.tvShows} />
+          {tvShows.length !== 0 && (
+            <ScrollGrid title="TV 프로그램" listLength={tvShows.length}>
+              <TVMovieGridItem list={tvShows} />
             </ScrollGrid>
           )}
-          {data.movies.length === 0 &&
-            data.tvShows.length === 0 &&
+          {movies.length === 0 &&
+            tvShows.length === 0 &&
             "검색 결과가 없습니다."}
         </MainContainer>
       )}

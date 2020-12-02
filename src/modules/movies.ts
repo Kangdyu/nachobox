@@ -22,13 +22,6 @@ type MoviesState = {
       error: null | string;
     };
   };
-  searches: {
-    [query: string]: {
-      results: MovieListItem[];
-      loading: boolean;
-      error: null | string;
-    };
-  };
 };
 
 const initialState: MoviesState = {
@@ -41,7 +34,6 @@ const initialState: MoviesState = {
     error: null,
   },
   details: {},
-  searches: {},
 };
 
 export const fetchMovieCategories = createAsyncThunk<
@@ -123,29 +115,6 @@ export const fetchMovieDetail = createAsyncThunk<
   }
 );
 
-export const fetchMovieSearchResults = createAsyncThunk<
-  MovieListItem[],
-  string,
-  { state: RootState }
->(
-  "movies/fetchMovieSearchResults",
-  async (query) => {
-    const response = await movieApi.search(query);
-    return response.data.results;
-  },
-  {
-    condition: (query, { getState }) => {
-      const {
-        movies: { searches },
-      } = getState();
-
-      if (searches[query]) {
-        return false;
-      }
-    },
-  }
-);
-
 const moviesSlice = createSlice({
   name: "movies",
   initialState,
@@ -194,18 +163,6 @@ const moviesSlice = createSlice({
     builder.addCase(fetchMovieDetail.rejected, (state, action) => {
       state.details[action.meta.arg].error = action.error.message as string;
       state.details[action.meta.arg].loading = false;
-    });
-
-    builder.addCase(fetchMovieSearchResults.pending, (state, action) => {
-      state.searches[action.meta.arg].loading = true;
-    });
-    builder.addCase(fetchMovieSearchResults.fulfilled, (state, action) => {
-      state.searches[action.meta.arg].results = action.payload;
-      state.searches[action.meta.arg].loading = false;
-    });
-    builder.addCase(fetchMovieSearchResults.rejected, (state, action) => {
-      state.searches[action.meta.arg].error = action.error.message as string;
-      state.searches[action.meta.arg].loading = false;
     });
   },
 });
