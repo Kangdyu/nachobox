@@ -4,6 +4,11 @@ import { CreditsInfo, MovieDetail, MovieListItem, Video } from "api/types";
 import { RootState } from "modules";
 
 type MoviesState = {
+  recommended: {
+    movie: MovieListItem | null;
+    loading: boolean;
+    error: string | null;
+  };
   categories: {
     nowPlaying: MovieListItem[];
     popular: MovieListItem[];
@@ -25,6 +30,11 @@ type MoviesState = {
 };
 
 const initialState: MoviesState = {
+  recommended: {
+    movie: null,
+    loading: false,
+    error: null,
+  },
   categories: {
     nowPlaying: [],
     popular: [],
@@ -73,6 +83,33 @@ export const fetchMovieCategories = createAsyncThunk<
         topRated.length !== 0 &&
         upcoming.length !== 0
       ) {
+        return false;
+      }
+    },
+  }
+);
+
+export const fetchRecommendedMovie = createAsyncThunk<
+  MovieListItem,
+  undefined,
+  { state: RootState }
+>(
+  "movies/fetchRecommendedMovie",
+  async (_, { getState }) => {
+    let { nowPlaying } = getState().movies.categories;
+    if (nowPlaying.length === 0) {
+      const res = await movieApi.nowPlaying();
+      nowPlaying = res.data.results;
+    }
+
+    const filtered = nowPlaying.filter((movie) => movie.backdrop_path);
+    const randomIdx = Math.floor(Math.random() * filtered.length);
+
+    return filtered[randomIdx];
+  },
+  {
+    condition: (_, { getState }) => {
+      if (getState().movies.recommended.movie) {
         return false;
       }
     },
@@ -138,6 +175,18 @@ const moviesSlice = createSlice({
     builder.addCase(fetchMovieCategories.rejected, (state, action) => {
       state.categories.error = action.error.message as string;
       state.categories.loading = false;
+    });
+
+    builder.addCase(fetchRecommendedMovie.pending, (state, action) => {
+      state.recommended.loading = true;
+    });
+    builder.addCase(fetchRecommendedMovie.fulfilled, (state, action) => {
+      state.recommended.movie = action.payload;
+      state.recommended.loading = false;
+    });
+    builder.addCase(fetchRecommendedMovie.rejected, (state, action) => {
+      state.recommended.error = action.error.message as string;
+      state.recommended.loading = false;
     });
 
     builder.addCase(fetchMovieDetail.pending, (state, action) => {
