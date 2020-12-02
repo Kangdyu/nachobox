@@ -12,6 +12,7 @@ import { RootState } from "modules";
 import { fetchTVCategories } from "modules/tvShows";
 
 import { MainContainer } from "styles";
+import ErrorPage from "components/common/ErrorPage";
 
 function TV() {
   const {
@@ -28,30 +29,29 @@ function TV() {
     dispatch(fetchTVCategories());
   }, [dispatch]);
 
+  if (loading) return <Loading />;
+  if (error) return <ErrorPage message={error} />;
   return (
     <>
       <Helmet>
         <title>TV 프로그램 | NachoBox</title>
       </Helmet>
-      {loading && <Loading />}
-      {!loading && (
-        <MainContainer>
-          <>
-            <ScrollGrid title="오늘의 프로그램" listLength={airingToday.length}>
-              <TVMovieGridItem list={airingToday} />
-            </ScrollGrid>
-            <ScrollGrid title="현재 방영중" listLength={onTheAir.length}>
-              <TVMovieGridItem list={onTheAir} />
-            </ScrollGrid>
-            <ScrollGrid title="인기 프로그램" listLength={popular.length}>
-              <TVMovieGridItem list={popular} />
-            </ScrollGrid>
-            <ScrollGrid title="최고 평점 프로그램" listLength={topRated.length}>
-              <TVMovieGridItem list={topRated} />
-            </ScrollGrid>
-          </>
-        </MainContainer>
-      )}
+      <MainContainer>
+        <>
+          <ScrollGrid title="오늘의 프로그램" listLength={airingToday.length}>
+            <TVMovieGridItem list={airingToday} />
+          </ScrollGrid>
+          <ScrollGrid title="현재 방영중" listLength={onTheAir.length}>
+            <TVMovieGridItem list={onTheAir} />
+          </ScrollGrid>
+          <ScrollGrid title="인기 프로그램" listLength={popular.length}>
+            <TVMovieGridItem list={popular} />
+          </ScrollGrid>
+          <ScrollGrid title="최고 평점 프로그램" listLength={topRated.length}>
+            <TVMovieGridItem list={topRated} />
+          </ScrollGrid>
+        </>
+      </MainContainer>
     </>
   );
 }

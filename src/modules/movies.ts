@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { AxiosError } from "axios";
 import { movieApi } from "api/api";
 import { CreditsInfo, MovieDetail, MovieListItem, Video } from "api/types";
-import { RootState } from "modules";
+import { RootState, FetchError } from "modules";
 
 type MoviesState = {
   recommended: {
@@ -57,18 +58,26 @@ export const fetchMovieCategories = createAsyncThunk<
   { state: RootState }
 >(
   "movies/fetchMovieCategories",
-  async () => {
-    const nowPlaying = await movieApi.nowPlaying();
-    const popular = await movieApi.popular();
-    const topRated = await movieApi.topRated();
-    const upcoming = await movieApi.upcoming();
+  async (_, { rejectWithValue }) => {
+    try {
+      const nowPlaying = await movieApi.nowPlaying();
+      const popular = await movieApi.popular();
+      const topRated = await movieApi.topRated();
+      const upcoming = await movieApi.upcoming();
 
-    return {
-      nowPlaying: nowPlaying.data.results,
-      popular: popular.data.results,
-      topRated: topRated.data.results,
-      upcoming: upcoming.data.results,
-    };
+      return {
+        nowPlaying: nowPlaying.data.results,
+        popular: popular.data.results,
+        topRated: topRated.data.results,
+        upcoming: upcoming.data.results,
+      };
+    } catch (error) {
+      let err: AxiosError<FetchError> = error;
+      if (!err.response) {
+        throw error;
+      }
+      return rejectWithValue(err.response.data.status_message);
+    }
   },
   {
     condition: (_, { getState }) => {
@@ -95,11 +104,19 @@ export const fetchRecommendedMovie = createAsyncThunk<
   { state: RootState }
 >(
   "movies/fetchRecommendedMovie",
-  async (_, { getState }) => {
+  async (_, { getState, rejectWithValue }) => {
     let { nowPlaying } = getState().movies.categories;
     if (nowPlaying.length === 0) {
-      const res = await movieApi.nowPlaying();
-      nowPlaying = res.data.results;
+      try {
+        const res = await movieApi.nowPlaying();
+        nowPlaying = res.data.results;
+      } catch (error) {
+        let err: AxiosError<FetchError> = error;
+        if (!err.response) {
+          throw error;
+        }
+        return rejectWithValue(err.response.data.status_message);
+      }
     }
 
     const filtered = nowPlaying.filter((movie) => movie.backdrop_path);
@@ -127,18 +144,26 @@ export const fetchMovieDetail = createAsyncThunk<
   { state: RootState }
 >(
   "movies/fetchMovieDetail",
-  async (movieId) => {
-    const detail = await movieApi.detail(movieId);
-    const videos = await movieApi.videos(movieId);
-    const credits = await movieApi.credits(movieId);
-    const recommendations = await movieApi.recommendations(movieId);
+  async (movieId, { rejectWithValue }) => {
+    try {
+      const detail = await movieApi.detail(movieId);
+      const videos = await movieApi.videos(movieId);
+      const credits = await movieApi.credits(movieId);
+      const recommendations = await movieApi.recommendations(movieId);
 
-    return {
-      detail: detail.data,
-      videos: videos.data.results,
-      credits: credits.data,
-      recommendations: recommendations.data.results,
-    };
+      return {
+        detail: detail.data,
+        videos: videos.data.results,
+        credits: credits.data,
+        recommendations: recommendations.data.results,
+      };
+    } catch (error) {
+      let err: AxiosError<FetchError> = error;
+      if (!err.response) {
+        throw error;
+      }
+      return rejectWithValue(err.response.data.status_message);
+    }
   },
   {
     condition: (movieId, { getState }) => {
@@ -173,7 +198,7 @@ const moviesSlice = createSlice({
       };
     });
     builder.addCase(fetchMovieCategories.rejected, (state, action) => {
-      state.categories.error = action.error.message as string;
+      state.categories.error = action.payload as string;
       state.categories.loading = false;
     });
 
@@ -185,7 +210,7 @@ const moviesSlice = createSlice({
       state.recommended.loading = false;
     });
     builder.addCase(fetchRecommendedMovie.rejected, (state, action) => {
-      state.recommended.error = action.error.message as string;
+      state.recommended.error = action.payload as string;
       state.recommended.loading = false;
     });
 
@@ -211,7 +236,7 @@ const moviesSlice = createSlice({
       };
     });
     builder.addCase(fetchMovieDetail.rejected, (state, action) => {
-      state.details[action.meta.arg].error = action.error.message as string;
+      state.details[action.meta.arg].error = action.payload as string;
       state.details[action.meta.arg].loading = false;
     });
   },

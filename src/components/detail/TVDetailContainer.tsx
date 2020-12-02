@@ -31,6 +31,7 @@ import {
   Rating,
   Title,
 } from "./styles";
+import ErrorPage from "components/common/ErrorPage";
 
 type TVDetailContainerProps = {
   id: number;
@@ -58,15 +59,10 @@ function TVDetailContainer({ id }: TVDetailContainerProps) {
     dispatch(fetchTVDetail(id));
   }, [dispatch, id]);
 
-  if (loading) {
-    return <Loading />;
-  }
-  if (error) {
-    return <div>Error {":("}</div>;
-  }
-  if (!detail) {
-    return <div>Something Wrong {":("}</div>;
-  }
+  if (loading) return <Loading />;
+  if (error) return <ErrorPage message={error} />;
+  if (!detail)
+    return <ErrorPage message="상세 정보를 불러오는 데 실패했습니다." />;
   return (
     <>
       <Helmet>

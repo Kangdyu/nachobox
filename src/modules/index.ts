@@ -13,6 +13,11 @@ const store = configureStore({
   reducer: rootReducer,
 });
 
+export type FetchError = {
+  status_code: number;
+  status_message: string;
+};
+
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppDispatch = typeof store.dispatch;
 

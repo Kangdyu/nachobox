@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { movieApi, tvApi } from "api/api";
 import { MovieListItem, TVListItem } from "api/types";
-import { RootState } from "modules";
+import { AxiosError } from "axios";
+import { FetchError, RootState } from "modules";
 
 type SearchState = {
   [query: string]: {
@@ -20,14 +21,22 @@ export const fetchSearchResults = createAsyncThunk<
   { state: RootState }
 >(
   "search/fetchSearchResults",
-  async (query) => {
-    const movieRes = await movieApi.search(query);
-    const tvRes = await tvApi.search(query);
+  async (query, { rejectWithValue }) => {
+    try {
+      const movieRes = await movieApi.search(query);
+      const tvRes = await tvApi.search(query);
 
-    return {
-      movies: movieRes.data.results,
-      tvShows: tvRes.data.results,
-    };
+      return {
+        movies: movieRes.data.results,
+        tvShows: tvRes.data.results,
+      };
+    } catch (error) {
+      let err: AxiosError<FetchError> = error;
+      if (!err.response) {
+        throw error;
+      }
+      return rejectWithValue(err.response.data.status_message);
+    }
   },
   {
     condition: (query, { getState }) => {
@@ -59,7 +68,7 @@ const searchSlice = createSlice({
       state[action.meta.arg].loading = false;
     });
     builder.addCase(fetchSearchResults.rejected, (state, action) => {
-      state[action.meta.arg].error = action.error.message as string;
+      state[action.meta.arg].error = action.payload as string;
       state[action.meta.arg].loading = false;
     });
   },

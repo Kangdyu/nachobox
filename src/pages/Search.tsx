@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "modules";
 import useAppDispatch from "hooks/useAppDispatch";
 import { fetchSearchResults } from "modules/search";
+import ErrorPage from "components/common/ErrorPage";
 
 const Title = styled.h1`
   font-size: 1.5rem;
@@ -38,30 +39,27 @@ function Search() {
     dispatch(fetchSearchResults(searchTerm));
   }, [dispatch, searchTerm]);
 
+  if (loading) return <Loading />;
+  if (error) return <ErrorPage message={error} />;
   return (
     <>
       <Helmet>
         <title>검색 | NachoBox</title>
       </Helmet>
-      {loading && <Loading />}
-      {!loading && (
-        <MainContainer>
-          <Title>"{searchTerm}" 검색 결과</Title>
-          {movies.length !== 0 && (
-            <ScrollGrid title="영화" listLength={movies.length}>
-              <TVMovieGridItem list={movies} />
-            </ScrollGrid>
-          )}
-          {tvShows.length !== 0 && (
-            <ScrollGrid title="TV 프로그램" listLength={tvShows.length}>
-              <TVMovieGridItem list={tvShows} />
-            </ScrollGrid>
-          )}
-          {movies.length === 0 &&
-            tvShows.length === 0 &&
-            "검색 결과가 없습니다."}
-        </MainContainer>
-      )}
+      <MainContainer>
+        <Title>"{searchTerm}" 검색 결과</Title>
+        {movies.length !== 0 && (
+          <ScrollGrid title="영화" listLength={movies.length}>
+            <TVMovieGridItem list={movies} />
+          </ScrollGrid>
+        )}
+        {tvShows.length !== 0 && (
+          <ScrollGrid title="TV 프로그램" listLength={tvShows.length}>
+            <TVMovieGridItem list={tvShows} />
+          </ScrollGrid>
+        )}
+        {movies.length === 0 && tvShows.length === 0 && "검색 결과가 없습니다."}
+      </MainContainer>
     </>
   );
 }

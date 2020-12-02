@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { tvApi } from "api/api";
 import { CreditsInfo, TVDetail, TVListItem, Video } from "api/types";
-import { RootState } from "modules";
+import { AxiosError } from "axios";
+import { FetchError, RootState } from "modules";
 
 type TVShowsState = {
   categories: {
@@ -47,18 +48,26 @@ export const fetchTVCategories = createAsyncThunk<
   { state: RootState }
 >(
   "TVs/fetchTVCategories",
-  async () => {
-    const airingToday = await tvApi.airingToday();
-    const onTheAir = await tvApi.onTheAir();
-    const popular = await tvApi.popular();
-    const topRated = await tvApi.topRated();
+  async (_, { rejectWithValue }) => {
+    try {
+      const airingToday = await tvApi.airingToday();
+      const onTheAir = await tvApi.onTheAir();
+      const popular = await tvApi.popular();
+      const topRated = await tvApi.topRated();
 
-    return {
-      airingToday: airingToday.data.results,
-      onTheAir: onTheAir.data.results,
-      popular: popular.data.results,
-      topRated: topRated.data.results,
-    };
+      return {
+        airingToday: airingToday.data.results,
+        onTheAir: onTheAir.data.results,
+        popular: popular.data.results,
+        topRated: topRated.data.results,
+      };
+    } catch (error) {
+      let err: AxiosError<FetchError> = error;
+      if (!err.response) {
+        throw error;
+      }
+      return rejectWithValue(err.response.data.status_message);
+    }
   },
   {
     condition: (_, { getState }) => {
@@ -90,18 +99,26 @@ export const fetchTVDetail = createAsyncThunk<
   { state: RootState }
 >(
   "TVs/fetchTVDetail",
-  async (tvId) => {
-    const detail = await tvApi.detail(tvId);
-    const videos = await tvApi.videos(tvId);
-    const credits = await tvApi.credits(tvId);
-    const recommendations = await tvApi.recommendations(tvId);
+  async (tvId, { rejectWithValue }) => {
+    try {
+      const detail = await tvApi.detail(tvId);
+      const videos = await tvApi.videos(tvId);
+      const credits = await tvApi.credits(tvId);
+      const recommendations = await tvApi.recommendations(tvId);
 
-    return {
-      detail: detail.data,
-      videos: videos.data.results,
-      credits: credits.data,
-      recommendations: recommendations.data.results,
-    };
+      return {
+        detail: detail.data,
+        videos: videos.data.results,
+        credits: credits.data,
+        recommendations: recommendations.data.results,
+      };
+    } catch (error) {
+      let err: AxiosError<FetchError> = error;
+      if (!err.response) {
+        throw error;
+      }
+      return rejectWithValue(err.response.data.status_message);
+    }
   },
   {
     condition: (tvId, { getState }) => {
@@ -136,7 +153,7 @@ const tvShowsSlice = createSlice({
       };
     });
     builder.addCase(fetchTVCategories.rejected, (state, action) => {
-      state.categories.error = action.error.message as string;
+      state.categories.error = action.payload as string;
       state.categories.loading = false;
     });
 
@@ -162,7 +179,7 @@ const tvShowsSlice = createSlice({
       };
     });
     builder.addCase(fetchTVDetail.rejected, (state, action) => {
-      state.details[action.meta.arg].error = action.error.message as string;
+      state.details[action.meta.arg].error = action.payload as string;
       state.details[action.meta.arg].loading = false;
     });
   },
