@@ -1,17 +1,23 @@
-import BackdropImage from "components/common/BackdropImage";
-import Loading from "components/common/Loading";
-import useAppDispatch from "hooks/useAppDispatch";
-import { RootState } from "modules";
-import { fetchMovieDetail } from "modules/movies";
 import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useSelector } from "react-redux";
-import { MainContainer } from "styles";
+
+import BackdropImage from "components/common/BackdropImage";
+import Loading from "components/common/Loading";
+
+import useAppDispatch from "hooks/useAppDispatch";
+
+import { RootState } from "modules";
+import { fetchMovieDetail } from "modules/movies";
+
 import { getPosterURL } from "utils/imageGetter";
+
 import Credits from "./Credits";
 import ProductionCompanies from "./ProductionCompanies";
 import Recommendations from "./Recommendations";
 import RelatedVideos from "./RelatedVideos";
+
+import { MainContainer } from "styles";
 import {
   Badge,
   DetailItem,

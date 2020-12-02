@@ -52,6 +52,7 @@ export const fetchMovieCategories = createAsyncThunk<
     const popular = await movieApi.popular();
     const topRated = await movieApi.topRated();
     const upcoming = await movieApi.upcoming();
+
     return {
       nowPlaying: nowPlaying.data.results,
       popular: popular.data.results,
