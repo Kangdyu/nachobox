@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import styled, { css } from "styled-components";
 
@@ -162,6 +162,12 @@ function Header() {
   const [searchFormOnMobile, setSearchFormOnMobile] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const history = useHistory();
+
+  useLayoutEffect(() => {
+    if (history.action === "PUSH") {
+      window.scrollTo(0, 0);
+    }
+  }, [history.action]);
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
