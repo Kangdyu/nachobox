@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import styled, { css } from "styled-components";
 
-import useScroll from "hooks/useScroll";
+import useScrollAlert from "hooks/useScrollAlert";
 
 import HamburgerMenu from "components/header/HamburgerMenu";
 import MobileSearchForm from "components/header/MobileSearchForm";
@@ -157,7 +157,7 @@ const SearchInput = styled.input`
 
 function Header() {
   const { pathname } = useLocation();
-  const scroll = useScroll();
+  const scrollAlert = useScrollAlert(0);
   const [hamburgerMenu, setHamburgerMenu] = useState(false);
   const [searchFormOnMobile, setSearchFormOnMobile] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -180,7 +180,7 @@ function Header() {
   };
 
   return (
-    <Container transparent={scroll === 0}>
+    <Container transparent={scrollAlert}>
       <Column>
         <HamburgerButton onClick={() => setHamburgerMenu(true)}>
           <i className="fas fa-bars"></i>
