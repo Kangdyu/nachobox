@@ -25,6 +25,8 @@ const PosterContainer = styled.div`
 const Poster = styled.img`
   width: 100%;
   border-radius: 10px;
+  object-fit: contain;
+  background-color: rgb(57, 62, 70);
 `;
 
 const Title = styled.h2`
